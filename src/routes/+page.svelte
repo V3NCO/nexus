@@ -1,11 +1,11 @@
 <!-- JS Part -->
 <script>
-  import Spotify from "$lib/tiles/git.svelte"
+  import Git from "$lib/tiles/git.svelte"
 </script>
 
 <!-- HTML Part -->
 <div class="main">
-    <Spotify/>
+    <Git/>
 </div>
 
 <!-- CSS Part -->
