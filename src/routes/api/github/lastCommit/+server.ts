@@ -17,5 +17,15 @@ export async function GET({ url }: RequestEvent): Promise<Response> {
 	const events_json = await response.json();
 	const events_push = events_json.filter((event: any) => event.type === 'PushEvent');
 	const last_push = events_push[0];
-	return json(last_push);
+	const commit_res = await fetch(
+		`https://api.github.com/repos/${last_push.repo.name}/commits/${last_push.payload.head}`,
+		{
+			method: 'GET',
+			headers: {
+				access_token: GITHUB_TOKEN
+			}
+		}
+	);
+	const commit = await commit_res.json();
+	return json(commit);
 }
