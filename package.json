@@ -32,5 +32,8 @@
 		"onlyBuiltDependencies": [
 			"esbuild"
 		]
+	},
+	"dependencies": {
+		"svelte-time": "1.0.0"
 	}
 }
