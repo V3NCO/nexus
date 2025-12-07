@@ -4,16 +4,38 @@
 </script>
 
 <!-- HTML Part -->
-<div class="main">
-    <div class="item item-wide"><Git/></div>
-    <div class="item item-wide"><Git/></div>
-    <div class="item"><Git/></div>
-    <div class="item item-wide"><Git/></div>
-    <div class="item item-wide"><Git/></div>
-    <div class="item item-wide"><Git/></div>
-
+<div class="mainermain">
+    <div class="main">
+        <div class="item item-wide"><Git/></div>
+        <div class="item item-wide"><Git/></div>
+        <div class="item"><Git/></div>
+        <div class="item"><Git/></div>
+        <div class="item item-wide"><Git/></div>
+        <div class="item item-wide"><Git/></div>
+        <div class="item item-wide"><Git/></div>
+        <div class="item item-wide"><Git/></div>
+        <div class="item item-wide"><Git/></div>
+        <div class="item"><Git/></div>
+        <div class="item"><Git/></div>
+        <div class="item item-wide"><Git/></div>
+        <div class="item item-wide"><Git/></div>
+        <div class="item item-wide"><Git/></div>
+        <div class="item item-wide"><Git/></div>
+        <div class="item item-wide"><Git/></div>
+        <div class="item"><Git/></div>
+        <div class="item"><Git/></div>
+        <div class="item item-wide"><Git/></div>
+        <div class="item item-wide"><Git/></div>
+        <div class="item item-wide"><Git/></div>
+        <div class="item item-wide"><Git/></div>
+        <div class="item item-wide"><Git/></div>
+        <div class="item"><Git/></div>
+        <div class="item"><Git/></div>
+        <div class="item item-wide"><Git/></div>
+        <div class="item item-wide"><Git/></div>
+        <div class="item item-wide"><Git/></div>
+    </div>
 </div>
-
 <!-- CSS Part -->
 <style>
     .main {
@@ -24,7 +46,9 @@
       width: 100%;
       min-height: 100%;
     }
-
+    .mainermain {
+        margin: 20px;
+    }
     .item {
         position: relative;
     }
@@ -33,10 +57,25 @@
         grid-column: span 2;
     }
 
-    @media (max-width: 400px) {
-
+    @media (max-width: 800px) {
         .main {
-            grid-template-columns: 1fr, 1fr;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-auto-rows: 33vw;
+            grid-auto-flow: dense;
+            width: 100%;
+            min-height: 100%;
+        }
+    }
+
+    @media (max-width: 450px) {
+        .main {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-auto-rows: 50vw;
+            grid-auto-flow: dense;
+            width: 100%;
+            min-height: 100%;
         }
     }
 </style>
