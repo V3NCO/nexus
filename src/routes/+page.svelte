@@ -7,33 +7,6 @@
 <div class="mainermain">
     <div class="main">
         <div class="item item-wide"><Git/></div>
-        <div class="item item-wide"><Git/></div>
-        <div class="item"><Git/></div>
-        <div class="item"><Git/></div>
-        <div class="item item-wide"><Git/></div>
-        <div class="item item-wide"><Git/></div>
-        <div class="item item-wide"><Git/></div>
-        <div class="item item-wide"><Git/></div>
-        <div class="item item-wide"><Git/></div>
-        <div class="item"><Git/></div>
-        <div class="item"><Git/></div>
-        <div class="item item-wide"><Git/></div>
-        <div class="item item-wide"><Git/></div>
-        <div class="item item-wide"><Git/></div>
-        <div class="item item-wide"><Git/></div>
-        <div class="item item-wide"><Git/></div>
-        <div class="item"><Git/></div>
-        <div class="item"><Git/></div>
-        <div class="item item-wide"><Git/></div>
-        <div class="item item-wide"><Git/></div>
-        <div class="item item-wide"><Git/></div>
-        <div class="item item-wide"><Git/></div>
-        <div class="item item-wide"><Git/></div>
-        <div class="item"><Git/></div>
-        <div class="item"><Git/></div>
-        <div class="item item-wide"><Git/></div>
-        <div class="item item-wide"><Git/></div>
-        <div class="item item-wide"><Git/></div>
     </div>
 </div>
 <!-- CSS Part -->
