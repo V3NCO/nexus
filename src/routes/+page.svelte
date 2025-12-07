@@ -5,12 +5,38 @@
 
 <!-- HTML Part -->
 <div class="main">
-    <Git/>
+    <div class="item item-wide"><Git/></div>
+    <div class="item item-wide"><Git/></div>
+    <div class="item"><Git/></div>
+    <div class="item item-wide"><Git/></div>
+    <div class="item item-wide"><Git/></div>
+    <div class="item item-wide"><Git/></div>
+
 </div>
 
 <!-- CSS Part -->
 <style>
     .main {
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+      grid-auto-rows: 20vw;
+      grid-auto-flow: dense;
+      width: 100%;
+      min-height: 100%;
+    }
+
+    .item {
+        position: relative;
+    }
+
+    .item-wide {
+        grid-column: span 2;
+    }
+
+    @media (max-width: 400px) {
+
+        .main {
+            grid-template-columns: 1fr, 1fr;
+        }
     }
 </style>
