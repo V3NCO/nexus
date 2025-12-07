@@ -7,9 +7,14 @@
       return response.json();
     };
 
-    async function TrimCommitMessage(({ message }: string): string => {
-      return "str";
-	});
+    const trimCommitMessage = async (message: string) => {
+      if (message.length >= 25) {
+        let msg1=message.substr(0, 24).concat("...");
+        return msg1
+      } else {
+        return message
+      }
+    };
 </script>
 <!-- HTML Part -->
 <div class="git item-wide">
@@ -24,11 +29,15 @@
                             <img src={response.author.avatar_url} alt="{response.author.login}" width="20" height="20" style="border-radius: 20px;">
                             <span style="font-weight: 700;">{response.commit.author.name}</span>
                             <span style="font-weight: 450;"></span>
-                            <span><Time relative timestamp="{response.commit.committer.date}" style="color: #59636e; font-weight: 300; font-size: 12px;"/></span>
+                            <span><Time relative timestamp="{response.commit.author.date}" style="color: #59636e; font-weight: 300; font-size: 12px;"/></span>
                         </div>
                     </a>
-                    <a style="font-weight: 700; font-size: 16px;" href="{response.html_url}">{response.commit.message}</a>
+                    {#await trimCommitMessage(response.commit.message)}
+                        <p>{response.commit.message}</p>
+                    {:then trimmed}
+                        <a style="font-weight: 700; font-size: 16px;" href="{response.html_url}">{trimmed}</a>
                     {/await}
+                {/await}
             </div>
             <div class="item activity-graph">
                 <p>Help</p>
