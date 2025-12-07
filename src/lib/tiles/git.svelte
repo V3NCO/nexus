@@ -2,8 +2,7 @@
 <script>
     const fetchGitHub = async () => {
       const response = await fetch(`/api/github/lastCommit`);
-      console.log(response.json())
-      return await response.json();
+      return response.json();
     };
 </script>
 <!-- HTML Part -->
@@ -13,6 +12,7 @@
             {#await fetchGitHub()}
                 <p>Waiting for repo</p>
             {:then response}
+                {console.log(response)}
                 <p>{response}</p>
             {/await}
         </div>

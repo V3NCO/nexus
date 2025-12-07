@@ -9,6 +9,13 @@ export async function GET({ url }: RequestEvent): Promise<Response> {
 			access_token: GITHUB_TOKEN
 		}
 	});
-	
-	
+
+	if (!response.ok) {
+		return json({ error: 'failed to fetch activity' }, { status: response.status });
+	}
+
+	const events_json = await response.json();
+	const events_push = events_json.filter((event: any) => event.type === 'PushEvent');
+	const last_push = events_push[0];
+	return json(last_push);
 }
