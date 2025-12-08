@@ -9,7 +9,7 @@
 
     const trimCommitMessage = async (message: string) => {
       if (message.length >= 25) {
-        let msg1=message.substr(0, 24).concat("...");
+        let msg1=message.substr(0, 22).concat("...");
         return msg1
       } else {
         return message
