@@ -1,13 +1,13 @@
 <!-- JS Part -->
-<script>
+<script lang="ts">
   import Git from "$lib/tiles/git.svelte"
-  import Time from "$lib/tiles/time.svelte"
+  import TimeWidget from "$lib/tiles/time.svelte"
 </script>
 
 <!-- HTML Part -->
 <div class="mainermain">
     <div class="main">
-        <!-- <div class="item item-wide"><Git/></div> -->
+        <div class="item item-wide"><Git/></div>
         <div class="item"><TimeWidget/></div>
     </div>
 </div>

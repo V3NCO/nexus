@@ -1,2 +1,8 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
+body {
+    background-image:
+        url($lib/assets/topo.svg);
+        background-color: #F1D7C5;
+    background-size: cover;
+}
