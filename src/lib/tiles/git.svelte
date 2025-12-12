@@ -1,7 +1,6 @@
 <!-- JS Part -->
 <script lang="ts">
     import Time from "svelte-time";
-
     const fetchGitHub = async () => {
       const response = await fetch(`/api/github/lastCommit`);
       return response.json();
@@ -37,6 +36,18 @@
                     {:then trimmed}
                         <a style="font-weight: 700; font-size: 16px;" href="{response.html_url}">{trimmed}</a>
                     {/await}
+                    {#if response.commit.verification.verified}
+                        <div style="outline-color: #238636; outline-width: 1px; outline-style: solid; border-radius: 50px; width: min-content; display: flex; align-items: center;">
+                            <p style="font-weight: 500; color: #3fb950; margin-left: 10px; margin-right: 5px;">✓</p>
+                            <p style="font-weight: 500; color: #3fb950; margin-right: 10px;">Verified</p>
+                        </div>
+                    {:else}
+                        <div style="outline-color: #da3633; outline-width: 1px; outline-style: solid; border-radius: 50px; width: min-content; display: flex; align-items: center;">
+                            <p style="font-weight: 500; color: #da3633; margin-left: 10px; margin-right: 5px;">⨯</p>
+                            <p style="font-weight: 500; color: #da3633; margin-right: 10px;">Unsigned</p>
+                        </div>
+                    {/if}
+                    
                 {/await}
             </div>
             <div class="item activity-graph">
