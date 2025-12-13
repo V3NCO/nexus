@@ -47,11 +47,22 @@
                             <p style="font-weight: 500; color: #da3633; margin-right: 10px;">Unsigned</p>
                         </div>
                     {/if}
-                    
+                    <a href="{response.html_url.replace(`/commit/${response.sha}`, '')}">
+                    <p style="font-weight: 600; margin-top: 10px;">Repo: {response.html_url.replace(`/commit/${response.sha}`, '').replace(`https://github.com/${response.author.login}/`, '')}</p>
+                    </a>
+                    <div style="width: min-content; display: flex; align-items: center; margin-top: 10px;">
+                        <p style="font-weight: 600; margin-right: 10px;">Additions: </p>
+                        <p style="font-weight: 600; color: #3fb950; margin-right: 10px;">+{response.stats.additions}</p>
+                    </div>
+                    <div style="width: min-content; display: flex; align-items: center; margin-top: 10px;">
+                        <p style="font-weight: 600; margin-right: 10px;">Deletions: </p>
+                        <p style="font-weight: 600; color: #da3633; margin-right: 10px;">-{response.stats.deletions}</p>
+                    </div>
+
                 {/await}
             </div>
             <div class="item activity-graph">
-                <p>Help</p>
+                
             </div>
         </section>
     </div>
