@@ -27,7 +27,10 @@ export async function GET({ url }: RequestEvent): Promise<Response> {
 		}
 	);
 	if (!commit_res.ok) {
-		return json({ error: `failed to fetch commit: ${JSON.stringify(response.headers)}` }, { status: response.status });
+		return json(
+			{ error: `failed to fetch commit: ${JSON.stringify(response.headers)}` },
+			{ status: response.status }
+		);
 	}
 	const commit = await commit_res.json();
 	return json(commit);

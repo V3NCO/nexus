@@ -22,7 +22,7 @@
     function getLastMonthContributions(calendarData: any) {
         const today = new Date();
         const oneMonthAgo = new Date();
-        oneMonthAgo. setMonth(today.getMonth() - 1);
+        oneMonthAgo.setDate(today.getDay() - 30);
 
         // Get all days and filter by date
         const allDays = calendarData.weeks.flatMap((week: any) => week.contributionDays);
@@ -35,8 +35,8 @@
         const weeks: any[][] = [];
 
         // Find the start of the grid (go back to include partial weeks)
-        const startDate = filteredDays. length > 0 ? new Date(filteredDays[0].date) : today;
-        const startDayOfWeek = startDate. getDay(); // 0-6 (Sun-Sat)
+        const startDate = filteredDays.length > 0 ? new Date(filteredDays[0].date) : today;
+        const startDayOfWeek = startDate.getDay(); // 0-6 (Sun-Sat)
 
         // Calculate how many days back we need to go to start on Sunday
         const daysToGoBack = startDayOfWeek;
@@ -56,11 +56,13 @@
             const dateStr = currentDate.toISOString().split('T')[0];
             const dayData = filteredDays.find((d: any) => d.date === dateStr);
 
-            // Check if this date is within our range
-            if (currentDate >= oneMonthAgo && currentDate <= today && dayData) {
-              week. push(dayData);
+            if (dayData) {
+              week.push(dayData);
             } else {
-              week.push(null);
+              week.push({
+                date: dateStr,
+                contributionCount:  0
+              });
             }
           }
 
@@ -70,8 +72,8 @@
         return weeks;
     }
 
-    function getColor(count: number | null): string {
-        if (count === null || count === 0) return '#ebedf0';
+    function getColor(count: number): string {
+        if (count === 0) return '#ebedf0';
         if (count < 3) return '#9be9a8';
         if (count < 6) return '#40c463';
         if (count < 9) return '#30a14e';
@@ -82,8 +84,8 @@
         try {
           const response = await fetch(`/api/github/graph`);
 
-          if (! response.ok) {
-            throw new Error(`HTTP error! status: ${response. status}`);
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
           }
 
           const data = await response.json();
@@ -121,9 +123,9 @@
                         </div>
                     </a>
                     <a style="font-weight: 700; font-size: 16px;" href="{response.html_url}">
-                        {trimCommitMessage(response.commit. message)}
+                        {trimCommitMessage(response.commit.message)}
                     </a>
-                    {#if response.commit.verification. verified}
+                    {#if response.commit.verification.verified}
                         <div style="outline-color: #238636; outline-width: 1px; outline-style: solid; border-radius: 50px; width: min-content; display: flex; align-items: center;">
                             <p style="font-weight: 500; color: #3fb950; margin-left: 10px; margin-right: 5px;">✓</p>
                             <p style="font-weight: 500; color: #3fb950; margin-right: 10px;">Verified</p>
@@ -150,7 +152,7 @@
             </div>
             <div class="item activity-graph">
                 {#if loading}
-                    <p>Loading... </p>
+                    <p>Loading...</p>
                 {:else if error}
                     <p class="error">Error: {error}</p>
                 {:else}
@@ -159,19 +161,15 @@
                             {#each contributions as week}
                                 <div class="week-column">
                                     {#each week as day}
-                                        {#if day === null}
-                                            <div class="contribution-day empty"></div>
-                                        {:else}
-                                            <div
-                                                class="contribution-day"
-                                                style="background-color: {getColor(day.contributionCount)}"
-                                                title="{day.contributionCount} contributions on {formatDate(day.date)}"
-                                            >
-                                                <span class="tooltip">
-                                                    {day.contributionCount} contributions on {formatDate(day.date)}
-                                                </span>
-                                            </div>
-                                        {/if}
+                                        <div
+                                            class="contribution-day"
+                                            style="background-color: {getColor(day.contributionCount)}"
+                                            title="{day.contributionCount} contributions on {formatDate(day.date)}"
+                                        >
+                                            <span class="tooltip">
+                                                {day.contributionCount} contributions on {formatDate(day.date)}
+                                            </span>
+                                        </div>
                                     {/each}
                                 </div>
                             {/each}
@@ -259,11 +257,9 @@
         position: relative;
         cursor: pointer;
         transition: transform 0.1s;
+        outline: 1px solid black;
     }
-    .contribution-day.empty {
-        background-color:  transparent;
-    }
-    .contribution-day:not(.empty):hover {
+    .contribution-day:hover {
         transform: scale(1.4);
         outline: 1px solid rgba(0, 0, 0, 0.3);
         z-index: 10;
