@@ -3,15 +3,15 @@ import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { sveltekitCookies } from 'better-auth/svelte-kit';
 import { getRequestEvent } from '$app/server';
 import { db } from '$lib/index';
-import { captcha } from "better-auth/plugins";
+// import { captcha } from "better-auth/plugins";
 import {
 	HACKCLUB_AUTH_CLIENT_ID,
 	HACKCLUB_AUTH_CLIENT_SECRET,
 	DISCORD_AUTH_CLIENT_ID,
 	DISCORD_AUTH_CLIENT_SECRET,
 	BETTER_AUTH_URL,
-	HCAPTCHA_SECRET_KEY,
-	HCAPTCHA_SITE_KEY
+	// HCAPTCHA_SECRET_KEY,
+	// HCAPTCHA_SITE_KEY
 } from '$env/static/private';
 import { genericOAuth } from 'better-auth/plugins';
 import * as schema from '$lib/auth/auth-schema';
@@ -48,11 +48,11 @@ export const auth = betterAuth({
 				}
 			]
 		}),
-		captcha({
-      provider: "hcaptcha",
-      siteKey: HCAPTCHA_SITE_KEY,
-      secretKey: HCAPTCHA_SECRET_KEY,
-		}),
+		// captcha({
+    //   provider: "hcaptcha",
+    //   siteKey: HCAPTCHA_SITE_KEY,
+    //   secretKey: HCAPTCHA_SECRET_KEY,
+    // }),
 		adminPlugin({
       ac,
       roles: {
