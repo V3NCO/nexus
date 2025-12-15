@@ -1,31 +1,51 @@
 <script lang="ts">
   import { authClient } from "$lib/auth/auth-client";
   const session = authClient.useSession();
+  import { goto } from '$app/navigation';
+
+  let email: string
+  let password: string
+  $effect: if ($session.data) goto('/');
 </script>
 
 <div class="main">
-    <button
-        class="loginbtn"
-        on:click={async () => {
-            await authClient.signIn.social({
-                provider: "hackclub",
+    {#if !$session.data}
+        <input class="loginput" type="email" bind:value={email} placeholder="johndoe@example.com" />
+        <input class="loginput" type="password" bind:value={password} placeholder="Password1234!" />
+        <button
+            class="loginbtn"
+            on:click={async () => {
+              await authClient.signIn.email({
+                  email: email,
+                  password: password
             });
-        }}
-    >
-        <img class="icon" src="https://assets.hackclub.com/icon-progress-rounded.svg" alt="Hackclub">
-        Login with Hack Club
-    </button>
-    <button
-        class="loginbtn"
-        on:click={async () => {
-            await authClient.signIn.social({
-                provider: "discord",
-            });
-        }}
-    >
-        <img class="icon" src="/discord-logo.svg" alt="Hackclub">
-        Login with Discord
-    </button>
+          }}
+        >
+              Login
+            </button>
+        <button
+            class="loginbtn"
+            on:click={async () => {
+              await authClient.signIn.social({
+                  provider: "hackclub",
+              });
+          }}
+        >
+            <img class="icon" src="https://assets.hackclub.com/icon-progress-rounded.svg" alt="Hackclub">
+                Login with Hack Club
+        </button>
+        <button
+            class="loginbtn"
+            on:click={async () => {
+              await authClient.signIn.social({
+                  provider: "discord",
+              });
+          }}
+        >
+            <img class="icon" src="/discord-logo.svg" alt="Hackclub">
+                Login with Discord
+        </button>
+    {/if}
 </div>
 
 <style>
@@ -55,6 +75,19 @@
     }
     .loginbtn:hover {
         background: #EAEAEA;
+    }
+
+    .loginput {
+        width: 100%;
+        background: white;
+        height: 3rem;
+        font-family: "Montserrat", sans-serif;
+        font-weight: 500;
+        font-size: 1.2rem;
+        font-optical-sizing: auto;
+        border-radius: 0.5em;
+        padding: 1rem;
+        outline: 0.1rem solid #000000;
     }
 
     .icon {
