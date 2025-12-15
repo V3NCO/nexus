@@ -108,7 +108,7 @@
     }
 </script>
 <!-- HTML Part -->
-<div class="git item-wide">
+<div class="git">
     <div class="box">
         <section>
             <div class="item last-commit">
@@ -187,7 +187,7 @@
 
     .box {
         background-color: #EFEFEF;
-        border-radius: 50px;
+        border-radius: 2rem;
         position: absolute;
         inset: 10px;
         font-family: "Montserrat", sans-serif;

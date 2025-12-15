@@ -2,13 +2,16 @@
 <script lang="ts">
   import Git from "$lib/tiles/git.svelte"
   import TimeWidget from "$lib/tiles/time.svelte"
+  // import TemplateSmall from "$lib/tiles/template_small.svelte"
+  // import TemplateWide from "$lib/tiles/template_wide.svelte"
 </script>
 
 <!-- HTML Part -->
 <div class="mainermain">
     <div class="main">
         <div class="item item-wide"><Git/></div>
-        <div class="item"><TimeWidget/></div>
+        <!-- <div class="item"><TemplateSmall/></div> -->
+        <!-- <div class="item item-wide"><TemplateWide/></div> -->
     </div>
 </div>
 <!-- CSS Part -->
