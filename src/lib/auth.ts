@@ -6,6 +6,8 @@ import { db } from '$lib/index';
 import {
 	HACKCLUB_AUTH_CLIENT_ID,
 	HACKCLUB_AUTH_CLIENT_SECRET,
+	DISCORD_AUTH_CLIENT_ID,
+	DISCORD_AUTH_CLIENT_SECRET,
 	BETTER_AUTH_URL
 } from '$env/static/private';
 import { genericOAuth } from 'better-auth/plugins';
@@ -18,6 +20,12 @@ export const auth = betterAuth({
 	}),
 	emailAndPassword: {
 		enabled: true
+	},
+	socialProviders: {
+	  discord: {
+      clientId: DISCORD_AUTH_CLIENT_ID as string,
+      clientSecret: DISCORD_AUTH_CLIENT_SECRET as string,
+    },
 	},
 	baseURL: BETTER_AUTH_URL || 'http://localhost:5173',
 	plugins: [

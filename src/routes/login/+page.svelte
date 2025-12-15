@@ -12,8 +12,19 @@
             });
         }}
     >
-        <img src="https://assets.hackclub.com/icon-progress-rounded.svg" alt="Hackclub">
-        Login with Hackclub
+        <img class="icon" src="https://assets.hackclub.com/icon-progress-rounded.svg" alt="Hackclub">
+        Login with Hack Club
+    </button>
+    <button
+        class="loginbtn"
+        on:click={async () => {
+            await authClient.signIn.social({
+                provider: "discord",
+            });
+        }}
+    >
+        <img class="icon" src="/discord-logo.svg" alt="Hackclub">
+        Login with Discord
     </button>
 </div>
 
@@ -36,6 +47,19 @@
         font-weight: 700;
         font-size: 1.5rem;
         font-optical-sizing: auto;
-        display: inline;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 0.5em;
+        cursor:pointer;
+    }
+    .loginbtn:hover {
+        background: #EAEAEA;
+    }
+
+    .icon {
+        width: 2rem;
+        height: 2rem;
+        margin-right: 0.5rem;
     }
 </style>
