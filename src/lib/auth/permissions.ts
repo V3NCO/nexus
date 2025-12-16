@@ -3,7 +3,7 @@ import { defaultStatements, adminAc } from 'better-auth/plugins/admin/access';
 
 const statement = {
 	...adminAc.statements,
-	location: ['read', 'update'],
+	location: ['read'],
 	git: ['read']
 } as const;
 
@@ -17,7 +17,7 @@ export const user = ac.newRole({
 
 export const admin = ac.newRole({
 	...adminAc.statements,
-	location: ['read', 'update']
+	location: ['read']
 });
 
 export const locationAccess = ac.newRole({
