@@ -2,7 +2,7 @@
 	import { page } from '$app/state';
 </script>
 <div class="container">
-    <p>{page.status} {page.error.message}</p>
+    <p>{page.status} {page.error?.message}</p>
 
 	{#if page.status == 404}
 	    <img src="/404ArtByMagentaSnail.png" alt="i forgor | By @MagentaSnail on tumblr check them out!"/>
