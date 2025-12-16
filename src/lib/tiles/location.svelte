@@ -1,7 +1,12 @@
 <!-- JS Part -->
 <script lang="ts">
     import { authClient } from "$lib/auth/auth-client";
-    const session = authClient.useSession();
+    import { onMount } from "svelte";
+    //const session = authClient.useSession();
+    onMount(async () => {
+      const response = await fetch(`/api/location`);
+      console.log(await response.json());
+    });
 </script>
 <!-- HTML Part -->
 <div class="item">

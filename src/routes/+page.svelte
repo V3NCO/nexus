@@ -2,7 +2,7 @@
 <script lang="ts">
   import Git from "$lib/tiles/git.svelte"
   import TimeWidget from "$lib/tiles/time.svelte"
-  import UserWidget from "$lib/tiles/user.svelte"
+  import LocationWidget from "$lib/tiles/location.svelte"
   // import TemplateSmall from "$lib/tiles/template_small.svelte"
   // import TemplateWide from "$lib/tiles/template_wide.svelte"
 </script>
@@ -11,7 +11,7 @@
 <div class="mainermain">
     <div class="main">
         <div class="item item-wide"><Git/></div>
-        <div class="item"><UserWidget/></div>
+        <div class="item"><LocationWidget/></div>
         <!-- <div class="item"><TemplateSmall/></div> -->
         <!-- <div class="item item-wide"><TemplateWide/></div> -->
     </div>

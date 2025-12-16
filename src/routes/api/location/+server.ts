@@ -1,11 +1,26 @@
 import { HASS_TOKEN } from '$env/static/private';
 import { HASS_URL } from '$env/static/private';
 import { HASS_LOCATION_ENTITY } from '$lib/config';
-
+import { auth } from '$lib/auth/auth';
 import { json, type RequestEvent } from '@sveltejs/kit';
 import { cache } from '$lib/server/cache';
 
-export async function GET({ url }: RequestEvent): Promise<Response> {
+export async function GET({ url, locals }: RequestEvent): Promise<Response> {
+  const user = locals.user;
+
+  if (!user) {
+    return json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  const canReadLocation = await auth.api.userHasPermission({
+    body: {
+      userId: user.id,
+      permission: {"location": ["read"]}
+    }
+  });
+  if (!canReadLocation.success) {
+		return json({ error: 'Forbidden' }, { status: 403 });
+	}
 	try {
 		const data = await cache.get(
 			'hass-location',
@@ -19,16 +34,16 @@ export async function GET({ url }: RequestEvent): Promise<Response> {
 				});
 				const data = await response.json();
 
-				if (data.errors) {
-					throw new Error(data.errors[0].message);
-				}
+			if (data.errors) {
+				throw new Error(data.errors[0].message);
+			}
 
-				return json({ latitude: data.attributes.latitude, longitude: data.attributes.longitude });
-			},
-			60000
-		);
-		return data;
-	} catch (error: any) {
-		return json({ error: error.message }, { status: 500 });
-	}
+			return json({ latitude: data.attributes.latitude, longitude: data.attributes.longitude });
+		},
+		60000
+	);
+	return data;
+} catch (error: any) {
+	return json({ error: error.message }, { status: 500 });
+}
 }

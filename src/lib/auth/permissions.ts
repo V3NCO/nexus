@@ -11,8 +11,7 @@ export const ac = createAccessControl(statement);
 
 export const user = ac.newRole({
 	user: [...defaultStatements.user],
-	session: [...defaultStatements.session],
-	git: ['read']
+	session: [...defaultStatements.session]
 });
 
 export const admin = ac.newRole({
@@ -21,5 +20,7 @@ export const admin = ac.newRole({
 });
 
 export const locationAccess = ac.newRole({
+  user: [...defaultStatements.user],
+	session: [...defaultStatements.session],
 	location: ['read']
 });

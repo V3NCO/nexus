@@ -81,10 +81,4 @@
         padding: 1rem;
         outline: 0.1rem solid #000000;
     }
-
-    .icon {
-        width: 2rem;
-        height: 2rem;
-        margin-right: 0.5rem;
-    }
 </style>
