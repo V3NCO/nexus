@@ -3,6 +3,7 @@
   const session = authClient.useSession();
   import { goto } from '$app/navigation';
 
+  let name: string
   let email: string
   let password: string
   $: if ($session.data) goto('/');
@@ -11,12 +12,14 @@
 <div class="container">
     <div class="main">
     {#if !$session.data}
+        <input class="loginput" type="name" bind:value={name} placeholder="John Doe :3" />
         <input class="loginput" type="email" bind:value={email} placeholder="johndoe@example.com" />
         <input class="loginput" type="password" bind:value={password} placeholder="Password1234!" />
         <button
             class="loginbtn"
             on:click={async () => {
-              await authClient.signIn.email({
+              await authClient.signUp.email({
+                name: name,
                 email: email,
                 password: password
             }, {onError:(ctx) => {
@@ -24,30 +27,7 @@
             }});
           }}
         >
-              Login
-        </button>
-        <hr/>
-        <button
-            class="loginbtn"
-            on:click={async () => {
-              await authClient.signIn.social({
-                  provider: "hackclub",
-              });
-          }}
-        >
-            <img class="icon" src="https://assets.hackclub.com/icon-progress-rounded.svg" alt="Hackclub">
-                Login with Hack Club
-        </button>
-        <button
-            class="loginbtn"
-            on:click={async () => {
-              await authClient.signIn.social({
-                  provider: "discord",
-              });
-          }}
-        >
-            <img class="icon" src="/discord-logo.svg" alt="Hackclub">
-                Login with Discord
+            Sign Up
         </button>
     {/if}
     </div>
