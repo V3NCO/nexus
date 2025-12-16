@@ -1,11 +1,15 @@
 <script lang="ts">
 	import { page } from '$app/state';
 </script>
-<div style="font-size: 10em">
+<div class="container">
     <p>{page.status} {page.error.message}</p>
 
 	{#if page.status == 404}
 	    <img src="/404ArtByMagentaSnail.png" alt="i forgor | By @MagentaSnail on tumblr check them out!"/>
+		<p>Art by Magenta Snail! Go check it out!</p>
+	{:else}
+	    <img src="/ErrorArtByMagentaSnail.png" alt="AAAA | By @MagentaSnail on tumblr check them out!">
+		<p>Art by Magenta Snail! Go check it out!</p>
 	{/if}
 </div>
 
@@ -21,10 +25,11 @@
     }
     img {
         width: 30rem;
+        height: 30rem;
     }
-    div {
-        display: flex;
-        justify-content: center;
-
+    .container {
+        display: grid;
+        place-items: center;
+        height: 100vh;
     }
 </style>
