@@ -42,7 +42,6 @@
 		]
 	},
 	"dependencies": {
-		"@sveltestack/svelte-query": "^1.6.0",
 		"better-auth": "^1.4.6",
 		"postgres": "^3.4.7",
 		"svelte-time": "1.0.0"
