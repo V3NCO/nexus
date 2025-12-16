@@ -38,7 +38,7 @@ export async function GET({ url, locals }: RequestEvent): Promise<Response> {
 				throw new Error(data.errors[0].message);
 			}
 
-			return json({ latitude: data.attributes.latitude, longitude: data.attributes.longitude });
+			return json({ lng: data.attributes.longitude, lat: data.attributes.latitude });
 		},
 		60000
 	);

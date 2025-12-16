@@ -2,16 +2,24 @@
 <script lang="ts">
     import { authClient } from "$lib/auth/auth-client";
     import { onMount } from "svelte";
+    import { MapLibre, NavigationControl, ScaleControl, GlobeControl } from 'svelte-maplibre-gl';
+
+
     //const session = authClient.useSession();
     onMount(async () => {
       const response = await fetch(`/api/location`);
-      console.log(await response.json());
     });
 </script>
 <!-- HTML Part -->
 <div class="item">
     <div class="box">
-
+        <MapLibre
+          class="h-[55vh] min-h-[300px]"
+          style="https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json"
+          zoom={3.5}
+          center={{ lng: 137, lat: 36 }}
+        >
+        </MapLibre>
     </div>
 </div>
 
