@@ -1,41 +1,45 @@
 <!-- JS Part -->
 <script lang="ts">
-    import { authClient } from "$lib/auth/auth-client";
     import { onMount } from "svelte";
-    import { MapLibre, NavigationControl, ScaleControl, GlobeControl, Marker } from 'svelte-maplibre-gl';
+    import { MapLibre, Marker } from 'svelte-maplibre-gl';
+    import { LOCATIONS, type Location } from '$lib/config';
 
-
-    //const session = authClient.useSession();
-    const fetchLocation = async () => {
-      const response = await fetch(`/api/location`);
-      let loc = await response.json();
-      let lnglat: any = $state({lng: loc.lng, lat: loc.lat})
-      return lnglat
+    type LocationData = Location & {
+      lnglat: { lng: number; lat: number };
     };
 
+    let locations = $state<LocationData[]>([]);
+
+    const fetchLocations = async () => {
+      for (const loc of LOCATIONS) {
+        const response = await fetch(`/api/location/${loc.id}`);
+        const data = await response.json();
+        locations.push({ ...loc, lnglat: { lng: data.lng, lat: data.lat } });
+      }
+    };
+
+    onMount(fetchLocations);
 </script>
+
 <!-- HTML Part -->
 <div class="item">
     <div class="box">
-        {#await fetchLocation()}
-            <p>Loading...</p>
-        {:then lnglat}
-            <MapLibre
-                class="h-[55vh] min-h-[300px]"
-                style="https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json"
-                zoom={3.5}
-                center={lnglat}
-            >
-                <Marker bind:lnglat draggable>
+        <MapLibre
+            class="h-[55vh] min-h-[300px]"
+            style="https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json"
+            zoom={12}
+            center={locations[0]?.lnglat || {lng: 0, lat: 0}}
+        >
+            {#each locations as location}
+                <Marker lnglat={location.lnglat}>
                     {#snippet content()}
                         <div class="text-center leading-none">
-                            <div class="text-3xl">🐶</div>
+                            <div class="text-3xl">{location.emoji}</div>
                         </div>
                     {/snippet}
                 </Marker>
-            </MapLibre>
-        {/await}
-
+            {/each}
+        </MapLibre>
     </div>
 </div>
 

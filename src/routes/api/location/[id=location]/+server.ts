@@ -1,13 +1,14 @@
 import { HASS_TOKEN } from '$env/static/private';
 import { HASS_URL } from '$env/static/private';
-import { HASS_LOCATION_ENTITY } from '$lib/config';
+import { HASS_LOCATION_ENTITY, LOCATIONS } from '$lib/config';
 import { auth } from '$lib/auth/auth';
 import { json, type RequestEvent } from '@sveltejs/kit';
 import { cache } from '$lib/server/cache';
 
-export async function GET({ url, locals }: RequestEvent): Promise<Response> {
-  const user = locals.user;
 
+export async function GET({ url, locals, params }: RequestEvent): Promise<Response> {
+  const user = locals.user;
+  const item = await LOCATIONS.find(({ id }) => id.toString() === params.id)
   if (!user) {
     return json({ error: 'Unauthorized' }, { status: 401 })
   }
@@ -23,9 +24,9 @@ export async function GET({ url, locals }: RequestEvent): Promise<Response> {
 	}
 	try {
 		const data = await cache.get(
-			'hass-location',
+      `hass-location-${item.hassid}`,
 			async () => {
-				const response = await fetch(`${HASS_URL}/api/states/${HASS_LOCATION_ENTITY}`, {
+				const response = await fetch(`${HASS_URL}/api/states/${item.hassid}`, {
 					method: 'GET',
 					headers: {
 						Authorization: `Bearer ${HASS_TOKEN}`,
