@@ -2,24 +2,40 @@
 <script lang="ts">
     import { authClient } from "$lib/auth/auth-client";
     import { onMount } from "svelte";
-    import { MapLibre, NavigationControl, ScaleControl, GlobeControl } from 'svelte-maplibre-gl';
+    import { MapLibre, NavigationControl, ScaleControl, GlobeControl, Marker } from 'svelte-maplibre-gl';
 
 
     //const session = authClient.useSession();
-    onMount(async () => {
+    const fetchLocation = async () => {
       const response = await fetch(`/api/location`);
-    });
+      let loc = await response.json();
+      let lnglat: any = $state({lng: loc.lng, lat: loc.lat})
+      return lnglat
+    };
+
 </script>
 <!-- HTML Part -->
 <div class="item">
     <div class="box">
-        <MapLibre
-          class="h-[55vh] min-h-[300px]"
-          style="https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json"
-          zoom={3.5}
-          center={{ lng: 137, lat: 36 }}
-        >
-        </MapLibre>
+        {#await fetchLocation()}
+            <p>Loading...</p>
+        {:then lnglat}
+            <MapLibre
+                class="h-[55vh] min-h-[300px]"
+                style="https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json"
+                zoom={3.5}
+                center={lnglat}
+            >
+                <Marker bind:lnglat draggable>
+                    {#snippet content()}
+                        <div class="text-center leading-none">
+                            <div class="text-3xl">🐶</div>
+                        </div>
+                    {/snippet}
+                </Marker>
+            </MapLibre>
+        {/await}
+
     </div>
 </div>
 

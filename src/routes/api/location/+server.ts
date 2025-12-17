@@ -38,11 +38,11 @@ export async function GET({ url, locals }: RequestEvent): Promise<Response> {
 				throw new Error(data.errors[0].message);
 			}
 
-			return json({ lng: data.attributes.longitude, lat: data.attributes.latitude });
+			return { lng: data.attributes.longitude, lat: data.attributes.latitude };
 		},
 		60000
 	);
-	return data;
+	return json(data);
 } catch (error: any) {
 	return json({ error: error.message }, { status: 500 });
 }
