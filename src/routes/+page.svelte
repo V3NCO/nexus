@@ -3,15 +3,36 @@
   import Git from "$lib/tiles/git.svelte"
   import TimeWidget from "$lib/tiles/time.svelte"
   import LocationWidget from "$lib/tiles/location.svelte"
+  import { authClient } from "$lib/auth/auth-client";
+  const session = authClient.useSession();
   // import TemplateSmall from "$lib/tiles/template_small.svelte"
   // import TemplateWide from "$lib/tiles/template_wide.svelte"
+  let canReadLocation = $state<Boolean | undefined>(undefined)
+  let loading = $state(true)
+  $effect(() => {
+    if (($session as any).data) {
+      (async () => {
+        const canReadLocationLocal = await authClient.admin.hasPermission({
+            userId: ($session as any).data?.user.id,
+            permission: { "location": ["read"] }
+        });
+        canReadLocation = canReadLocationLocal.data?.success
+        console.log(canReadLocation)
+        loading = false;
+      })();
+    } else {
+      console.log("Nopee")
+      canReadLocation = false
+      loading = false;
+    }
+  });
 </script>
 
 <!-- HTML Part -->
 <div class="mainermain">
     <div class="main">
         <div class="item item-wide"><Git/></div>
-        <div class="item"><LocationWidget/></div>
+        {#if loading}<p>Checking permissions...</p>{:else}{#if canReadLocation} <div class="item"><LocationWidget/></div> {/if}{/if}
         <!-- <div class="item"><TemplateSmall/></div> -->
         <!-- <div class="item item-wide"><TemplateWide/></div> -->
     </div>

@@ -1,14 +1,16 @@
 <!-- JS Part -->
 <script lang="ts">
-    import { onMount } from "svelte";
+
     import { MapLibre, Marker } from 'svelte-maplibre-gl';
     import { LOCATIONS, type Location } from '$lib/config';
+    import { authClient } from "$lib/auth/auth-client";
 
     type LocationData = Location & {
       lnglat: { lng: number; lat: number };
     };
 
     let locations = $state<LocationData[]>([]);
+    const session = authClient.useSession();
 
     const fetchLocations = async () => {
       for (const loc of LOCATIONS) {
@@ -18,7 +20,11 @@
       }
     };
 
-    onMount(fetchLocations);
+    $effect(() => {
+      if (session) {
+        fetchLocations();
+      }
+    });
 </script>
 
 <!-- HTML Part -->
