@@ -4,7 +4,6 @@ import { defaultStatements, adminAc } from 'better-auth/plugins/admin/access';
 const statement = {
 	...adminAc.statements,
 	location: ['read'],
-	git: ['read']
 } as const;
 
 export const ac = createAccessControl(statement);
