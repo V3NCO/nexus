@@ -15,7 +15,7 @@
         <input class="loginput" type="password" bind:value={password} placeholder="Password1234!" />
         <button
             class="loginbtn"
-            on:click={async () => {
+            onclick={async () => {
               await authClient.signIn.email({
                 email: email,
                 password: password
@@ -29,7 +29,7 @@
         <hr/>
         <button
             class="loginbtn"
-            on:click={async () => {
+            onclick={async () => {
               await authClient.signIn.social({
                   provider: "hackclub",
               });
@@ -40,7 +40,7 @@
         </button>
         <button
             class="loginbtn"
-            on:click={async () => {
+            onclick={async () => {
               await authClient.signIn.social({
                   provider: "discord",
               });

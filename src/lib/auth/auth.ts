@@ -24,6 +24,11 @@ export const auth = betterAuth({
 		provider: 'pg',
 		schema
 	}),
+  user: {
+    deleteUser: {
+      enabled: true
+    }
+  },
 	emailAndPassword: {
 		enabled: true
 	},
@@ -59,7 +64,8 @@ export const auth = betterAuth({
           user,
           admin,
           locationAccess
-      }
+      },
+      defaultRole: "user"
     }),
 	]
 });

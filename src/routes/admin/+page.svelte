@@ -4,22 +4,29 @@
   let selectedRoles = new Map();
   const initRoles = (user: any) => {
     if (!selectedRoles.has(user.id)) {
-      selectedRoles.set(user.id, user.role?.split(",") || []);
+      const raw = user.role ?? '';
+      const clean = raw.split(',').map((r: string) => r.trim()).filter((r: string) => r.length > 0); // remove empty strings
+      selectedRoles.set(user.id, clean);
     }
     return selectedRoles.get(user.id);
   }
 
-   const roleUpdate = async (user: any, roles: string[]) => {
+
+  const roleUpdate = async (user: any, roles: string[]) => {
     if (!user?.id) return;
     try {
-      console.log(roles)
+      const cleanroles = (roles ?? [])
+        .map((r) => r.trim())
+        .filter((r) => r.length > 0); // remove empty/whitespace roles
+
+      console.log(cleanroles);
       await authClient.admin.setRole({
         userId: user.id,
-        role: roles as any
-      })
-      location.reload()
+        role: cleanroles as any
+      });
+      location.reload();
     } catch (error) {
-      console.error('Failed to update role:', error)
+      console.error('Failed to update role:', error);
     }
   }
 </script>
@@ -42,13 +49,13 @@
             <p>Roles: </p>
             {#each availableRoles as role}
                 <div>
-                    <input type="checkbox" id="{role}-{user.id}" name="{role}" checked={roles.includes(role)} on:change={(e) => { if (e.target.checked) { roles.push(role); } else { const index = roles.indexOf(role); if (index > -1) roles.splice(index, 1); } selectedRoles.set(user.id, roles); }} />
+                    <input type="checkbox" id="{role}-{user.id}" name="{role}" checked={roles.includes(role)} onchange={(e) => { if (e.target.checked) { roles.push(role); } else { const index = roles.indexOf(role); if (index > -1) roles.splice(index, 1); } selectedRoles.set(user.id, roles); }} />
                     <label for="{role}">{role}</label>
                 </div>
             {/each}
             <button
                 class="applyrole"
-                on:click={() => roleUpdate(user, selectedRoles.get(user.id) || [])}
+                onclick={() => roleUpdate(user, selectedRoles.get(user.id) || [])}
             >
                 Apply Roles
             </button>

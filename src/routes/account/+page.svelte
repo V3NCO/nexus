@@ -1,33 +1,39 @@
 <script lang="ts">
   import { authClient } from "$lib/auth/auth-client";
-  const session = authClient.useSession();
-  import { goto } from '$app/navigation';
 
-  let name: string
-  let email: string
-  let password: string
-  $: if ($session.data) goto('/');
+  const session = authClient.useSession();
+  let oldpassword:string
+  let newpassword: string
 </script>
 
 <div class="container">
     <div class="main">
-    {#if !$session.data}
-        <input class="loginput" type="name" bind:value={name} placeholder="John Doe :3" />
-        <input class="loginput" type="email" bind:value={email} placeholder="johndoe@example.com" />
-        <input class="loginput" type="password" bind:value={password} placeholder="Password1234!" />
+    {#if $session.data}
+        <input class="loginput" type="password" bind:value={oldpassword} placeholder="Current Password" />
+        <input class="loginput" type="password" bind:value={newpassword} placeholder="New Password" />
         <button
             class="loginbtn"
             onclick={async () => {
-              await authClient.signUp.email({
-                name: name,
-                email: email,
-                password: password
+              await authClient.changePassword({
+                currentPassword: oldpassword,
+                newPassword: newpassword
             }, {onError:(ctx) => {
               alert(ctx.error.message)
             }});
           }}
         >
-            Sign Up
+            Change Password
+        </button>
+        <hr/>
+        <button
+            class="loginbtn"
+            style="outline: 0.5rem, solid, red;"
+            onclick={async () => {
+              await authClient.deleteUser({}, {onError:(ctx) => {
+            }});
+          }}
+        >
+            Delete Account!
         </button>
     {/if}
     </div>
@@ -80,5 +86,11 @@
         border-radius: 0.5em;
         padding: 1rem;
         outline: 0.1rem solid #000000;
+    }
+
+    .icon {
+        width: 2rem;
+        height: 2rem;
+        margin-right: 0.5rem;
     }
 </style>

@@ -3,6 +3,26 @@
 	import { goto } from "$app/navigation";
     import { authClient } from "$lib/auth/auth-client";
     const session = authClient.useSession();
+
+    let isAdmin = $state<Boolean | undefined>(undefined)
+    let loading = $state(true)
+    $effect(() => {
+      if (($session as any).data) {
+        (async () => {
+          const isAdminLocal = await authClient.admin.hasPermission({
+              userId: ($session as any).data?.user.id,
+              permission: { "adminPanel": ["access"] }
+          });
+          isAdmin = isAdminLocal.data?.success
+          console.log(isAdmin)
+          loading = false;
+        })();
+      } else {
+        console.log("Nopee")
+        isAdmin = false
+        loading = false;
+      }
+    });
 </script>
 <!-- HTML Part -->
 <div class="item">
@@ -13,8 +33,26 @@
                 <p style="font-weight: 600;">Name: {$session.data.user.name}</p>
                 <p style="font-weight: 600;">Email: {$session.data.user.email}</p>
                 <button
+                    class="action manageacc"
+                    onclick={() => goto("/account")}
+                >
+                    Manage Account
+                </button>
+                {#if loading}
+                    <p>Checking permissions...</p>
+                {:else}
+                    {#if isAdmin}
+                        <button
+                            class="action admin"
+                            onclick={() => goto("/admin")}
+                        >
+                            Admin Panel
+                        </button>
+                    {/if}
+                {/if}
+                <button
                     class="action logout"
-                    on:click={
+                    onclick={
                       async () => {
                         await authClient.signOut();
                       }
@@ -28,13 +66,13 @@
                 <p class="logstatus">Logged Out!</p>
                 <button
                     class="action login"
-                    on:click={() => goto("/login")}
+                    onclick={() => goto("/login")}
                 >
                     Log In
                 </button>
                 <button
                     class="action signup"
-                    on:click={() => goto("/signup")}
+                    onclick={() => goto("/signup")}
                 >
                     Sign Up
                 </button>
@@ -78,18 +116,37 @@
     }
 
     .logout {
-        outline: 0.25rem solid #FF746C;
+        outline: 0.125rem solid #FF746C;
         border-bottom-right-radius: 1rem;
         border-bottom-left-radius: 1rem;
         border-top-right-radius: 0.2rem;
         border-top-left-radius: 0.2rem;
         height: 2.5rem;
         font-size: 1.25rem;
-        font-weight: 600;
+        font-weight: 500;
+    }
+
+    .manageacc {
+        outline: 0.125rem solid #a2bffe;
+        border-bottom-right-radius: 0.2rem;
+        border-bottom-left-radius: 0.2rem;
+        border-top-right-radius: 1rem;
+        border-top-left-radius: 1rem;
+        height: 2.5rem;
+        font-size: 1.25rem;
+        font-weight: 500;
+    }
+
+    .admin {
+        outline: 0.125rem solid #ff8000;
+        border-radius: 0.2rem;
+        height: 2.5rem;
+        font-size: 1.25rem;
+        font-weight: 500;
     }
 
     .login {
-        outline: 0.25rem solid #77dd77;
+        outline: 0.125rem solid #77dd77;
         border-top-right-radius: 1rem;
         border-top-left-radius: 1rem;
         border-bottom-right-radius: 0.2rem;
@@ -98,11 +155,11 @@
         margin-top: 0.5rem;
         height: 100%;
         font-size: 1.25rem;
-        font-weight: 600;
+        font-weight: 500;
     }
 
     .signup {
-        outline: 0.25rem solid #a2bffe;
+        outline: 0.125rem solid #a2bffe;
         border-bottom-right-radius: 1rem;
         border-bottom-left-radius: 1rem;
         border-top-right-radius: 0.2rem;
@@ -110,7 +167,7 @@
         margin-top: 0.5rem;
         height: 100%;
         font-size: 1.25rem;
-        font-weight: 600;
+        font-weight: 500;
     }
 
     .logstatus {
