@@ -3,6 +3,7 @@
   import Git from "$lib/tiles/git.svelte"
   import UserWidget from "$lib/tiles/user.svelte"
   import LocationWidget from "$lib/tiles/location.svelte"
+  import LastFmWidget from "$lib/tiles/lastfm.svelte"
   import { authClient } from "$lib/auth/auth-client";
   const session = authClient.useSession();
   // import TemplateSmall from "$lib/tiles/template_small.svelte"
@@ -34,6 +35,7 @@
         <div class="item item-wide"><Git/></div>
         {#if loading}<p>Checking permissions...</p>{:else}{#if canReadLocation} <div class="item"><LocationWidget/></div> {/if}{/if}
         <div class="item"><UserWidget/></div>
+        <div class="item"><LastFmWidget/></div>
         <!-- <div class="item"><TemplateSmall/></div> -->
         <!-- <div class="item item-wide"><TemplateWide/></div> -->
     </div>

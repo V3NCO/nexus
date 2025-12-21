@@ -22,3 +22,4 @@ export const LOCATIONS: Location[] = [
     label: "Stardust - my mac!"
   },
 ]
+export const LASTFM_USERNAME = 'v3nco'
