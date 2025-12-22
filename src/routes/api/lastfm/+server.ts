@@ -16,7 +16,7 @@ export async function GET({ url }: RequestEvent): Promise<Response> {
 
 				return await response.json();
 			},
-			30000 // Cache for 30 seconds
+			10000 // Cache for 10 seconds
 		);
 		let current
 		const track = data?.recenttracks?.track
@@ -25,9 +25,9 @@ export async function GET({ url }: RequestEvent): Promise<Response> {
       const trarray = track[0];
       if (trarray['@attr'] && trarray['@attr']['nowplaying']) {
         current = { nowplaying: true, track: trarray };
-      }
-		} else {
-      current = { nowplaying: false, track: track };
+      } else {
+          current = { nowplaying: false, track: null };
+		}
 		}
 
 		return json(current);
