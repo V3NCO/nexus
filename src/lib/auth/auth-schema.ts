@@ -96,3 +96,17 @@ export const accountRelations = relations(account, ({ one }) => ({
     references: [user.id],
   }),
 }));
+
+
+// From here its just for the app config
+export const locations = pgTable("locations", {
+  id: text("id").primaryKey(),
+  hassid: text("hassid").notNull(),
+  emoji: text("emoji").notNull(),
+  label: text("label").notNull(),
+});
+
+export const appConfig = pgTable("app_config", {
+  key: text("key").primaryKey(), // e.g., 'GITHUB_USERNAME'
+  value: text("value").notNull(),
+});
