@@ -1,7 +1,8 @@
 FROM node:22-alpine AS builder
 WORKDIR /app
 COPY package*.json ./
-RUN yarn ci
+RUN yarn install --frozen-lockfile
+
 COPY . .
 RUN yarn run build
 RUN yarn prune --production
