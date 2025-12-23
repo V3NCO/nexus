@@ -1,13 +1,13 @@
 import { auth } from '$lib/auth/auth';
 import { svelteKitHandler } from 'better-auth/svelte-kit';
-import { building } from '$app/environment';
+import { building, dev } from '$app/environment';
 import { db } from '$lib';
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
 
 let migrated = false;
 
 export async function handle({ event, resolve }) {
-	if (!migrated && !building) {
+	if (!migrated && !building && !dev) {
 		console.log('Running database migrations...');
 		await migrate(db, { migrationsFolder: 'drizzle' });
 		migrated = true;

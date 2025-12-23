@@ -12,8 +12,12 @@ export const GET: RequestHandler = async ({ request }) => {
 		try {
 			// Run migrations
 			console.log('Running migrations...');
-			await migrate(db, { migrationsFolder: 'drizzle' });
-			console.log('Migrations completed.');
+			try {
+				await migrate(db, { migrationsFolder: 'drizzle' });
+				console.log('Migrations completed.');
+			} catch (migrationError) {
+				console.error('Migration failed or already applied:', migrationError);
+			}
 
 			const adminEmail = 'admin@admin.nexus';
 			const adminPassword = 'Admin123!';
