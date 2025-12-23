@@ -6,7 +6,7 @@ export type Location = {
 };
 
 export const GITHUB_USERNAME = 'v3nco';
-export const HASS_LOCATION_ENTITY = 'person.venco';
+export const HASS_TIMEZONE_ENTITY = 'sensor.pixel_8_pro_current_time_zone';
 export const LOCATIONS: Location[] = [
   // The map gets centered on the first item in this list so its kinda the most important
   {
