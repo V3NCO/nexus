@@ -1,6 +1,6 @@
 import { HASS_TOKEN } from '$env/static/private';
 import { HASS_URL } from '$env/static/private';
-import { HASS_TIMEZONE_ENTITY } from '$lib/config';
+import { getConfigValue } from '$lib/server/config';
 import { auth } from '$lib/auth/auth';
 import { json, type RequestEvent } from '@sveltejs/kit';
 import { cache } from '$lib/server/cache';
@@ -8,10 +8,15 @@ import { cache } from '$lib/server/cache';
 
 export async function GET({ url, locals, params }: RequestEvent): Promise<Response> {
 	try {
+		const timezoneEntity = await getConfigValue('HASS_TIMEZONE_ENTITY');
+		if (!timezoneEntity) {
+			throw new Error('HASS_TIMEZONE_ENTITY not found in config');
+		}
+
 		const data = await cache.get(
-      `hass-timezone`,
+			`hass-timezone-${timezoneEntity}`,
 			async () => {
-				const response = await fetch(`${HASS_URL}/api/states/${HASS_TIMEZONE_ENTITY}`, {
+				const response = await fetch(`${HASS_URL}/api/states/${timezoneEntity}`, {
 					method: 'GET',
 					headers: {
 						Authorization: `Bearer ${HASS_TOKEN}`,

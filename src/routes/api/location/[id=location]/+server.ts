@@ -1,22 +1,29 @@
 import { HASS_TOKEN } from '$env/static/private';
 import { HASS_URL } from '$env/static/private';
-import { HASS_LOCATION_ENTITY, LOCATIONS } from '$lib/config';
 import { auth } from '$lib/auth/auth';
 import { json, type RequestEvent } from '@sveltejs/kit';
 import { cache } from '$lib/server/cache';
+import { db } from '$lib';
+import { locations } from '$lib/auth/auth-schema';
+import { eq } from 'drizzle-orm';
 
 
 export async function GET({ url, locals, params }: RequestEvent): Promise<Response> {
   const user = locals.user;
-  const item = await LOCATIONS.find(({ id }) => id.toString() === params.id)
+  const [item] = await db.select().from(locations).where(eq(locations.id, params.id!)).limit(1);
+
   if (!user) {
     return json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  if (!item) {
+    return json({ error: 'Location not found' }, { status: 404 });
   }
 
   const canReadLocation = await auth.api.userHasPermission({
     body: {
       userId: user.id,
-      permission: {"location": ["read"]}
+      permission: {"location": ["read"]} as any
     }
   });
   if (!canReadLocation.success) {

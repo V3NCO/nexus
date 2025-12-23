@@ -1,14 +1,19 @@
 import { LASTFM_KEY, LASTFM_SHARED_SECRET } from '$env/static/private';
-import { LASTFM_USERNAME } from '$lib/config';
+import { getConfigValue } from '$lib/server/config';
 import { json, type RequestEvent } from '@sveltejs/kit';
 import { cache } from '$lib/server/cache';
 
 export async function GET({ url }: RequestEvent): Promise<Response> {
 	try {
+		const username = await getConfigValue('LASTFM_USERNAME');
+		if (!username) {
+			throw new Error('LASTFM_USERNAME not found in config');
+		}
+
 		const data = await cache.get(
 			'lastfm',
 			async () => {
-				const response = await fetch(`https://ws.audioscrobbler.com/2.0/?method=user.getRecentTracks&user=${LASTFM_USERNAME}&api_key=${LASTFM_KEY}&format=json`,{method: 'GET'});
+				const response = await fetch(`https://ws.audioscrobbler.com/2.0/?method=user.getRecentTracks&user=${username}&api_key=${LASTFM_KEY}&format=json`,{method: 'GET'});
 
 				if (!response.ok) {
 					throw new Error('Failed to fetch activity');

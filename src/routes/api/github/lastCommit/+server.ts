@@ -1,14 +1,19 @@
 import { GITHUB_TOKEN } from '$env/static/private';
-import { GITHUB_USERNAME } from '$lib/config';
+import { getConfigValue } from '$lib/server/config';
 import { json, type RequestEvent } from '@sveltejs/kit';
 import { cache } from '$lib/server/cache';
 
 export async function GET({ url }: RequestEvent): Promise<Response> {
 	try {
+		const username = await getConfigValue('GITHUB_USERNAME');
+		if (!username) {
+			throw new Error('GITHUB_USERNAME not found in config');
+		}
+
 		const data = await cache.get(
 			'github-last-commit',
 			async () => {
-				const response = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/events`, {
+				const response = await fetch(`https://api.github.com/users/${username}/events`, {
 					method: 'GET',
 					headers: {
 						Authorization: `Bearer ${GITHUB_TOKEN}`

@@ -18,7 +18,7 @@
       (async () => {
         const canReadLocationLocal = await authClient.admin.hasPermission({
             userId: ($session as any).data?.user.id,
-            permission: { "location": ["read"] }
+            permission: { "location": ["read"] } as any
         });
         canReadLocation = canReadLocationLocal.data?.success
         console.log(canReadLocation)

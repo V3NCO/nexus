@@ -1,5 +1,5 @@
 import { SLACK_TOKEN } from '$env/static/private';
-import { SLACK_ID } from '$lib/config';
+import { getConfigValue } from '$lib/server/config';
 import { json, type RequestEvent } from '@sveltejs/kit';
 import { cache } from '$lib/server/cache';
 
@@ -31,9 +31,13 @@ async function findLastPublicMessage() {
 	let page = 1;
 	const perPage = 20;
 
+	const slackId = await getConfigValue('SLACK_ID');
+	if (!slackId) {
+		throw new Error('SLACK_ID not found in config');
+	}
 	while (true) {
 		const url = new URL('https://slack.com/api/search.messages');
-		url.searchParams.set('query', `from:<@${SLACK_ID}>`);
+		url.searchParams.set('query', `from:<@${slackId}>`);
 		url.searchParams.set('sort', 'timestamp');
 		url.searchParams.set('sort_dir', 'desc');
 		url.searchParams.set('count', String(perPage));
@@ -58,7 +62,7 @@ async function findLastPublicMessage() {
 
 		if (publicMsg) {
       const usrurl = new URL('https://slack.com/api/users.profile.get');
-      usrurl.searchParams.set('user', `${SLACK_ID}`);
+      usrurl.searchParams.set('user', `${slackId}`);
       const usrresponse = await fetch(usrurl.toString(), {
         method: 'GET',
         headers: {

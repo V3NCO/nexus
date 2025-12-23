@@ -1,10 +1,15 @@
 import { GITHUB_TOKEN } from '$env/static/private';
-import { GITHUB_USERNAME } from '$lib/config';
+import { getConfigValue } from '$lib/server/config';
 import { json, type RequestEvent } from '@sveltejs/kit';
 import { cache } from '$lib/server/cache';
 
 export async function GET({ url }: RequestEvent): Promise<Response> {
 	try {
+		const username = await getConfigValue('GITHUB_USERNAME');
+		if (!username) {
+			throw new Error('GITHUB_USERNAME not found in config');
+		}
+
 		const data = await cache.get(
 			'github-graph',
 			async () => {
@@ -33,7 +38,7 @@ export async function GET({ url }: RequestEvent): Promise<Response> {
 					},
 					body: JSON.stringify({
 						query,
-						variables: { username: GITHUB_USERNAME }
+						variables: { username }
 					})
 				});
 				const data = await response.json();

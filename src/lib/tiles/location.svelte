@@ -2,7 +2,7 @@
 <script lang="ts">
 
     import { MapLibre, Marker } from 'svelte-maplibre-gl';
-    import { LOCATIONS, type Location } from '$lib/config';
+    import { type Location } from '$lib/config';
     import { authClient } from "$lib/auth/auth-client";
 
     type LocationData = Location & {
@@ -13,7 +13,10 @@
     const session = authClient.useSession();
 
     const fetchLocations = async () => {
-      for (const loc of LOCATIONS) {
+      const res = await fetch('/api/locations');
+      const locs: Location[] = await res.json();
+
+      for (const loc of locs) {
         const response = await fetch(`/api/location/${loc.id}`);
         const data = await response.json();
         locations.push({ ...loc, lnglat: { lng: data.lng, lat: data.lat } });
