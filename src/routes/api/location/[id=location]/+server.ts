@@ -51,7 +51,81 @@ export async function GET({ url, locals, params }: RequestEvent): Promise<Respon
 		60000
 	);
 	return json(data);
-} catch (error: any) {
-	return json({ error: error.message }, { status: 500 });
+	} catch (error: any) {
+		return json({ error: error.message }, { status: 500 });
+	}
 }
+
+export async function PATCH({ locals, params, request }: RequestEvent): Promise<Response> {
+	const user = locals.user;
+	if (!user) {
+		return json({ error: 'Unauthorized' }, { status: 401 });
+	}
+
+	const canWriteLocation = await auth.api.userHasPermission({
+		body: {
+			userId: user.id,
+			permission: { location: ['write'] } as any
+		}
+	});
+
+	if (!canWriteLocation.success) {
+		return json({ error: 'Forbidden' }, { status: 403 });
+	}
+
+	try {
+		const body = await request.json();
+		const { hassid, emoji, label } = body;
+
+		const [updatedLocation] = await db
+			.update(locations)
+			.set({
+				...(hassid && { hassid }),
+				...(emoji && { emoji }),
+				...(label && { label })
+			})
+			.where(eq(locations.id, params.id!))
+			.returning();
+
+		if (!updatedLocation) {
+			return json({ error: 'Location not found' }, { status: 404 });
+		}
+
+		return json(updatedLocation);
+	} catch (error: any) {
+		return json({ error: error.message }, { status: 500 });
+	}
+}
+
+export async function DELETE({ locals, params }: RequestEvent): Promise<Response> {
+	const user = locals.user;
+	if (!user) {
+		return json({ error: 'Unauthorized' }, { status: 401 });
+	}
+
+	const canDeleteLocation = await auth.api.userHasPermission({
+		body: {
+			userId: user.id,
+			permission: { location: ['delete'] } as any
+		}
+	});
+
+	if (!canDeleteLocation.success) {
+		return json({ error: 'Forbidden' }, { status: 403 });
+	}
+
+	try {
+		const [deletedLocation] = await db
+			.delete(locations)
+			.where(eq(locations.id, params.id!))
+			.returning();
+
+		if (!deletedLocation) {
+			return json({ error: 'Location not found' }, { status: 404 });
+		}
+
+		return json({ message: 'Location deleted successfully' });
+	} catch (error: any) {
+		return json({ error: error.message }, { status: 500 });
+	}
 }
