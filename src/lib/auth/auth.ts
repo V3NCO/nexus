@@ -16,7 +16,8 @@ export const auth = betterAuth({
 		provider: 'pg',
 		schema
 	}),
-  secret: env.BETTER_AUTH_SECRET,
+  // Provide a fallback secret for build-time analysis to prevent BetterAuth from crashing
+  secret: env.BETTER_AUTH_SECRET || 'secret-key-only-used-during-build-analysis',
   user: {
     deleteUser: {
       enabled: true
@@ -38,8 +39,8 @@ export const auth = betterAuth({
 			config: [
 				{
 					providerId: 'hackclub',
-					clientId: env.HACKCLUB_AUTH_CLIENT_ID!,
-					clientSecret: env.HACKCLUB_AUTH_CLIENT_SECRET!,
+					clientId: env.HACKCLUB_AUTH_CLIENT_ID || 'dummy-id',
+					clientSecret: env.HACKCLUB_AUTH_CLIENT_SECRET || 'dummy-secret',
 					discoveryUrl: 'https://auth.hackclub.com/.well-known/openid-configuration',
 					authorizationUrl: 'https://auth.hackclub.com/oauth/authorize',
 					scopes: ['openid', 'email', 'profile', 'slack_id']

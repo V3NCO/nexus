@@ -4,6 +4,6 @@ import * as schema from './schema';
 import { env } from '$env/dynamic/private';
 
 const connectionString = env.DATABASE_URL || 'postgres://localhost:5432/nexus';
-const client = postgres(env.DATABASE_URL);
+const client = postgres(connectionString);
 
 export const db = drizzle(client, { schema });

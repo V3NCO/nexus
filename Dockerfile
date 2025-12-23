@@ -5,6 +5,8 @@ COPY package.json yarn.lock* ./
 RUN yarn install --frozen-lockfile
 
 COPY . .
+# Generate SvelteKit types/metadata to fix tsconfig warnings and build errors
+RUN yarn prepare
 RUN yarn build
 
 # --- Production Stage ---
