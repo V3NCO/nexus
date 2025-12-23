@@ -57,7 +57,21 @@ async function findLastPublicMessage() {
 		const publicMsg = matches.find((msg) => msg.channel && !msg.channel.is_private);
 
 		if (publicMsg) {
-      return publicMsg;
+      const usrurl = new URL('https://slack.com/api/users.profile.get');
+      usrurl.searchParams.set('user', `${SLACK_ID}`);
+      const usrresponse = await fetch(usrurl.toString(), {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${SLACK_TOKEN}`
+        }
+      });
+
+      if (!usrresponse.ok) {
+        throw new Error('Failed to fetch user');
+      }
+      const usr = await usrresponse.json()
+
+      return {message: publicMsg, user: usr};
 		}
 
 		const totalPages = res.messages?.paging?.pages ?? page;
