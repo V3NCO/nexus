@@ -1,5 +1,5 @@
-import { HASS_TOKEN } from '$env/static/private';
-import { HASS_URL } from '$env/static/private';
+import { HASS_TOKEN } from '$env/dynamic/private';
+import { HASS_URL } from '$env/dynamic/private';
 import { auth } from '$lib/auth/auth';
 import { json, type RequestEvent } from '@sveltejs/kit';
 import { cache } from '$lib/server/cache';

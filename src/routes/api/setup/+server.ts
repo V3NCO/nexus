@@ -4,7 +4,7 @@ import { auth } from '$lib/auth/auth';
 import { appConfig, locations, user } from '$lib/auth/auth-schema';
 import { eq } from 'drizzle-orm';
 import type { RequestHandler } from './$types';
-import { DANGER_INITAL_RUN_THIS_CAN_GIVE_ADMIN_TO_ANYONE_WHEN_TRUE } from '$env/static/private';
+import { DANGER_INITAL_RUN_THIS_CAN_GIVE_ADMIN_TO_ANYONE_WHEN_TRUE } from '$env/dynamic/private';
 
 export const GET: RequestHandler = async ({ request }) => {
 	if (DANGER_INITAL_RUN_THIS_CAN_GIVE_ADMIN_TO_ANYONE_WHEN_TRUE === 'y') {

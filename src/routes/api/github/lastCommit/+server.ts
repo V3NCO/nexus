@@ -1,4 +1,4 @@
-import { GITHUB_TOKEN } from '$env/static/private';
+import { GITHUB_TOKEN } from '$env/dynamic/private';
 import { getConfigValue } from '$lib/server/config';
 import { json, type RequestEvent } from '@sveltejs/kit';
 import { cache } from '$lib/server/cache';

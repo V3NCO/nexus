@@ -13,7 +13,7 @@ import {
 	BETTER_AUTH_SECRET,
 	// HCAPTCHA_SECRET_KEY,
 	// HCAPTCHA_SITE_KEY
-} from '$env/static/private';
+} from '$env/dynamic/private';
 import { genericOAuth } from 'better-auth/plugins';
 import * as schema from '$lib/auth/auth-schema';
 import { admin as adminPlugin } from "better-auth/plugins"

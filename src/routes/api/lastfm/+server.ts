@@ -1,4 +1,4 @@
-import { LASTFM_KEY, LASTFM_SHARED_SECRET } from '$env/static/private';
+import { LASTFM_KEY, LASTFM_SHARED_SECRET } from '$env/dynamic/private';
 import { getConfigValue } from '$lib/server/config';
 import { json, type RequestEvent } from '@sveltejs/kit';
 import { cache } from '$lib/server/cache';
