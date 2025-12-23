@@ -1,4 +1,4 @@
-import { LASTFM_KEY, LASTFM_SHARED_SECRET } from '$env/dynamic/private';
+import { env } from '$env/dynamic/private';
 import { getConfigValue } from '$lib/server/config';
 import { json, type RequestEvent } from '@sveltejs/kit';
 import { cache } from '$lib/server/cache';
@@ -13,7 +13,7 @@ export async function GET({ url }: RequestEvent): Promise<Response> {
 		const data = await cache.get(
 			'lastfm',
 			async () => {
-				const response = await fetch(`https://ws.audioscrobbler.com/2.0/?method=user.getRecentTracks&user=${username}&api_key=${LASTFM_KEY}&format=json`,{method: 'GET'});
+				const response = await fetch(`https://ws.audioscrobbler.com/2.0/?method=user.getRecentTracks&user=${username}&api_key=${env.LASTFM_KEY}&format=json`,{method: 'GET'});
 
 				if (!response.ok) {
 					throw new Error('Failed to fetch activity');

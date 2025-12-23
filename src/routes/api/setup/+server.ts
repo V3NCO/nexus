@@ -4,10 +4,10 @@ import { auth } from '$lib/auth/auth';
 import { appConfig, locations, user } from '$lib/auth/auth-schema';
 import { eq } from 'drizzle-orm';
 import type { RequestHandler } from './$types';
-import { DANGER_INITAL_RUN_THIS_CAN_GIVE_ADMIN_TO_ANYONE_WHEN_TRUE } from '$env/dynamic/private';
+import { env } from '$env/dynamic/private';
 
 export const GET: RequestHandler = async ({ request }) => {
-	if (DANGER_INITAL_RUN_THIS_CAN_GIVE_ADMIN_TO_ANYONE_WHEN_TRUE === 'y') {
+	if (env.DANGER_INITAL_RUN_THIS_CAN_GIVE_ADMIN_TO_ANYONE_WHEN_TRUE === 'y') {
 		try {
 			const adminEmail = 'admin@admin.nexus';
 			const adminPassword = 'Admin123!';

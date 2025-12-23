@@ -1,4 +1,4 @@
-import { GITHUB_TOKEN } from '$env/dynamic/private';
+import { env } from '$env/dynamic/private';
 import { getConfigValue } from '$lib/server/config';
 import { json, type RequestEvent } from '@sveltejs/kit';
 import { cache } from '$lib/server/cache';
@@ -33,7 +33,7 @@ export async function GET({ url }: RequestEvent): Promise<Response> {
 				const response = await fetch(`https://api.github.com/graphql`, {
 					method: 'POST',
 					headers: {
-						Authorization: `Bearer ${GITHUB_TOKEN}`,
+						Authorization: `Bearer ${env.GITHUB_TOKEN}`,
 						'Content-Type': 'application/json'
 					},
 					body: JSON.stringify({

@@ -1,5 +1,4 @@
-import { HASS_TOKEN } from '$env/dynamic/private';
-import { HASS_URL } from '$env/dynamic/private';
+import { env } from '$env/dynamic/private';
 import { auth } from '$lib/auth/auth';
 import { json, type RequestEvent } from '@sveltejs/kit';
 import { cache } from '$lib/server/cache';
@@ -33,10 +32,10 @@ export async function GET({ url, locals, params }: RequestEvent): Promise<Respon
 		const data = await cache.get(
       `hass-location-${item.hassid}`,
 			async () => {
-				const response = await fetch(`${HASS_URL}/api/states/${item.hassid}`, {
+				const response = await fetch(`${env.HASS_URL}/api/states/${item.hassid}`, {
 					method: 'GET',
 					headers: {
-						Authorization: `Bearer ${HASS_TOKEN}`,
+						Authorization: `Bearer ${env.HASS_TOKEN}`,
 						'Content-Type': 'application/json'
 					}
 				});

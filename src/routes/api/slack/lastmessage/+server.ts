@@ -1,4 +1,4 @@
-import { SLACK_TOKEN } from '$env/dynamic/private';
+import { env } from '$env/dynamic/private';
 import { getConfigValue } from '$lib/server/config';
 import { json, type RequestEvent } from '@sveltejs/kit';
 import { cache } from '$lib/server/cache';
@@ -8,14 +8,14 @@ type SlackSearchResponse = {
 	messages: {
 		matches: Array<{
 			channel: {
-        id: string;
-        name: string;
+				id: string;
+				name: string;
 				is_private: boolean;
 				is_channel?: boolean;
 			};
 			text: string;
-      user: string;
-      username: string;
+			user: string;
+			username: string;
 			permalink: string;
 			ts: string;
 		}>;
@@ -46,7 +46,7 @@ async function findLastPublicMessage() {
 		const response = await fetch(url.toString(), {
 			method: 'GET',
 			headers: {
-				Authorization: `Bearer ${SLACK_TOKEN}`
+				Authorization: `Bearer ${env.SLACK_TOKEN}`
 			}
 		});
 
@@ -61,21 +61,21 @@ async function findLastPublicMessage() {
 		const publicMsg = matches.find((msg) => msg.channel && !msg.channel.is_private);
 
 		if (publicMsg) {
-      const usrurl = new URL('https://slack.com/api/users.profile.get');
-      usrurl.searchParams.set('user', `${slackId}`);
-      const usrresponse = await fetch(usrurl.toString(), {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${SLACK_TOKEN}`
-        }
-      });
+			const usrurl = new URL('https://slack.com/api/users.profile.get');
+			usrurl.searchParams.set('user', `${slackId}`);
+			const usrresponse = await fetch(usrurl.toString(), {
+				method: 'GET',
+				headers: {
+					Authorization: `Bearer ${env.SLACK_TOKEN}`
+				}
+			});
 
-      if (!usrresponse.ok) {
-        throw new Error('Failed to fetch user');
-      }
-      const usr = await usrresponse.json()
+			if (!usrresponse.ok) {
+				throw new Error('Failed to fetch user');
+			}
+			const usr = await usrresponse.json();
 
-      return {message: publicMsg, user: usr};
+			return { message: publicMsg, user: usr };
 		}
 
 		const totalPages = res.messages?.paging?.pages ?? page;
