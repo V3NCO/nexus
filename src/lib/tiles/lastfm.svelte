@@ -1,21 +1,41 @@
 <!-- JS Part -->
 <script lang="ts">
-	import { onMount } from "svelte";
+    import { onMount, onDestroy } from "svelte";
 
 	let lastfm_res = $state<any | undefined>(undefined);
 	let loading = $state<boolean>(true);
 	let error
-    onMount(async () => {
-        try {
-          let res = await fetch(`/api/lastfm`);
-          lastfm_res = await res.json();
-          loading = false;
-        } catch (err:  any) {
-          error = err.message;
-          loading = false;
+    let intervalId: ReturnType<typeof setInterval> | undefined;
+
+    async function fetchLastfm(initial = false) {
+      if (initial) {
+        loading = true;
       }
+      try {
+        const res = await fetch(`/api/lastfm`);
+        const data = await res.json();
+        lastfm_res = data
+        error = undefined;
+      } catch (err: any) {
+        error = err.message ?? String(err);
+      } finally {
+        if (initial) {
+          loading = false;
+        }
       }
-    )
+    }
+
+    onMount(() => {
+        fetchLastfm(true);
+        intervalId = setInterval(() => fetchLastfm(false), 30_000);
+        return () => {
+            if (intervalId) clearInterval(intervalId);
+        };
+    });
+
+    onDestroy(() => {
+        if (intervalId) clearInterval(intervalId);
+    });
 </script>
 <!-- HTML Part -->
 <div class="item">
@@ -71,6 +91,9 @@
         display: flex;
         flex-direction: column;
         padding: 1rem;
-        height: 100%
+        height: 100%;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
     }
 </style>
