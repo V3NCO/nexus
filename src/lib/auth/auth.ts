@@ -10,6 +10,7 @@ import {
 	DISCORD_AUTH_CLIENT_ID,
 	DISCORD_AUTH_CLIENT_SECRET,
 	BETTER_AUTH_URL,
+	BETTER_AUTH_SECRET,
 	// HCAPTCHA_SECRET_KEY,
 	// HCAPTCHA_SITE_KEY
 } from '$env/static/private';
@@ -24,6 +25,7 @@ export const auth = betterAuth({
 		provider: 'pg',
 		schema
 	}),
+  secret: BETTER_AUTH_SECRET,
   user: {
     deleteUser: {
       enabled: true
