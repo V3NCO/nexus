@@ -23,3 +23,4 @@ export const LOCATIONS: Location[] = [
   },
 ]
 export const LASTFM_USERNAME = 'v3nco'
+export const SLACK_ID="U08L7671TDG"
