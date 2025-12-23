@@ -3,12 +3,18 @@ import { db } from '$lib';
 import { auth } from '$lib/auth/auth';
 import { appConfig, locations, user } from '$lib/auth/auth-schema';
 import { eq } from 'drizzle-orm';
+import { migrate } from 'drizzle-orm/postgres-js/migrator';
 import type { RequestHandler } from './$types';
 import { env } from '$env/dynamic/private';
 
 export const GET: RequestHandler = async ({ request }) => {
 	if (env.DANGER_INITAL_RUN_THIS_CAN_GIVE_ADMIN_TO_ANYONE_WHEN_TRUE === 'y') {
 		try {
+			// Run migrations
+			console.log('Running migrations...');
+			await migrate(db, { migrationsFolder: 'drizzle' });
+			console.log('Migrations completed.');
+
 			const adminEmail = 'admin@admin.nexus';
 			const adminPassword = 'Admin123!';
 			const adminName = 'admin';

@@ -1,14 +1,41 @@
+version: "3.8"
 services:
   db:
-    image: postgres
-    restart: always
-    ports:
-      - 5432:5432
-    environment: 
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: mysecretpassword
-      POSTGRES_DB: local
+    image: postgres:15
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: ${POSTGRES_PASS}
+      POSTGRES_DB: nexus
     volumes:
-      - pgdata:/var/lib/postgresql
-volumes:
-  pgdata:
+      - ./pg:/var/lib/postgresql/data
+    ports:
+      - 5434:5432
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U app -d nexus
+      interval: 5s
+      retries: 20
+    networks:
+      - default
+  nexus:
+    image: ghcr.io/v3nco/nexus:latest
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - .env
+    networks:
+      - default
+      - proxy
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.nexus.rule=Host(`nexus.v3nco.dev`)
+      - traefik.http.routers.nexus.entrypoints=https
+      - traefik.http.routers.nexus.tls.certresolver=myresolver
+      - traefik.http.routers.nexus.priority=1
+      - traefik.http.routers.nexus.middlewares=security-headers@file,rate-limit@file
+      - traefik.http.services.nexus.loadbalancer.server.port=3000
+networks:
+  proxy:
+    external: true

@@ -15,6 +15,7 @@ WORKDIR /app
 
 # Copy the built application
 COPY --from=builder /app/build build/
+COPY --from=builder /app/drizzle drizzle/
 # Copy only production dependencies to keep the image small
 COPY package.json yarn.lock* ./
 RUN yarn install --production --frozen-lockfile
