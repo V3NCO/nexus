@@ -8,10 +8,14 @@ type SlackSearchResponse = {
 	messages: {
 		matches: Array<{
 			channel: {
+        id: string;
+        name: string;
 				is_private: boolean;
 				is_channel?: boolean;
 			};
 			text: string;
+      user: string;
+      username: string;
 			permalink: string;
 			ts: string;
 		}>;
@@ -53,12 +57,7 @@ async function findLastPublicMessage() {
 		const publicMsg = matches.find((msg) => msg.channel && !msg.channel.is_private);
 
 		if (publicMsg) {
-			return {
-				text: publicMsg.text,
-				permalink: publicMsg.permalink,
-				ts: publicMsg.ts,
-				channel: publicMsg.channel
-			};
+      return publicMsg;
 		}
 
 		const totalPages = res.messages?.paging?.pages ?? page;
