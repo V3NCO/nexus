@@ -139,3 +139,33 @@ Copy .env.example and name that copy .env; we're going to fill each individual f
 }
 ```
 3. Install to hack club and copy the token to `SLACK_TOKEN=`
+
+### Initial setup
+1. Set the env variable `DANGER_INITAL_RUN_THIS_CAN_GIVE_ADMIN_TO_ANYONE_WHEN_TRUE=` to `y`
+2. assuming you have your `.env` and `compose.yaml` in the same directory, run `docker compose up -d`
+3. The default opened port is 3000, connect to your instance with that info, from now on replace `https://nexus.v3nco.dev` in this tutorial with your own URL
+4. Click the sign up button if you want to make your account via email or the login if you want via HCA or Discord
+5. Log Out
+6. Go to `https://nexus.v3nco.dev/api/setup`
+7. Copy the displayed email and password and login using those.
+8. Go to `https://nexus.v3nco.dev/admin`
+9. Set the user you created to admin, apply.
+10. Go to `https://nexus.v3nco.dev/account`
+11. Click `Delete account` to delete this unsafe default account
+12. run `docker compose down -d`
+13. Set the env variable `DANGER_INITAL_RUN_THIS_CAN_GIVE_ADMIN_TO_ANYONE_WHEN_TRUE=` to `n`
+14. run `docker compose up -d`
+15. Log in to the account you first created and go to `https://nexus.v3nco.dev/admin`
+16. Set `GITHUB_USERNAME` to your github username
+17. `LASTFM_USERNAME` to your lastfm username
+18. `SLACK_ID` to your slack ID you can obtain in the #what-is-my-slack-id channel
+19. Go to your home assistant and search for an entity called 'Current time zone', click it, click the settings icon and copy the full Entity ID
+20. Set `HASS_TIMEZONE_ENTITY` to that Entity ID
+21. For Locations:
+- the label is kinda useless
+- the entity ID obtained by searching 'tracker' and doing the same but on this device tracker entity instead
+- the emoji one that shows up on the map
+- the `ID` is on the default items `1` for `My Phone :3` and `2` for `Stardust - my mac!`
+- the map centers on the item with an `ID` of `1` when loaded
+
+And it's done! Now you can tell your friends to create an account and assign them according permissions from that admin page! You can still access the page without being logged in just without the hidden widgets
