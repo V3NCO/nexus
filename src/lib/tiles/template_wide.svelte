@@ -40,4 +40,11 @@
       padding-top: 2em;
       padding-bottom: 2em;
     }
+
+    section {
+        display: flex;
+        flex: 1;
+        min-height: 0;
+        overflow: hidden;
+    }
 </style>
