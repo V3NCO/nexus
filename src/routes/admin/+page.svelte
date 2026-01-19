@@ -29,16 +29,20 @@
 
   let config = $state<Record<string, string>>({});
   let locations = $state<any[]>([]);
+  let calendars = $state<any[]>([]);
   let newLocation = $state({ id: '', hassid: '', emoji: '', label: '' });
+  let newCalendar = $state({ id: '', url: '', color: '', name: '' });
 
   const fetchData = async () => {
     try {
-      const [configRes, locationsRes] = await Promise.all([
+      const [configRes, locationsRes, calendarsRes] = await Promise.all([
         fetch('/api/config'),
-        fetch('/api/locations')
+        fetch('/api/locations'),
+        fetch('/api/calendars')
       ]);
       config = await configRes.json();
       locations = await locationsRes.json();
+      calendars = await calendarsRes.json();
     } catch (e) {
       console.error('Failed to fetch data', e);
     }
@@ -97,6 +101,45 @@
       alert('Error');
     }
   };
+
+  const addCalendar = async () => {
+    try {
+      const res = await fetch('/api/calendars', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newCalendar)
+      });
+      if (res.ok) {
+        newCalendar = { id: '', url: '', color: '', name: '' };
+        fetchData();
+      }
+    } catch (e) {
+      alert('Error');
+    }
+  };
+
+  const updateCalendar = async (cal: any) => {
+    try {
+      await fetch(`/api/calendar/${loc.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(cal)
+      });
+      alert('Updated');
+    } catch (e) {
+      alert('Error');
+    }
+  };
+
+  const deleteCalendar = async (id: string) => {
+    if (!confirm('Delete?')) return;
+    try {
+      await fetch(`/api/calendar/${id}`, { method: 'DELETE' });
+      fetchData();
+    } catch (e) {
+      alert('Error');
+    }
+  };
 </script>
 
 <div style="padding: 20px;">
@@ -128,6 +171,26 @@
       <input type="text" bind:value={newLocation.hassid} placeholder="HASS ID" />
       <input type="text" bind:value={newLocation.emoji} placeholder="Emoji" style="width: 40px" />
       <button onclick={addLocation}>Add</button>
+    </div>
+  </div>
+
+  <h2>Calendars</h2>
+  <div class="userlist">
+    {#each calendars as cal}
+      <div class="userline">
+        <input type="text" bind:value={cal.name} placeholder="Name" />
+        <input type="text" bind:value={cal.url} placeholder="ICal URL" />
+        <input type="text" bind:value={cal.emoji} placeholder="Color" style="width: 40px" />
+        <button onclick={() => updateCalendar(cal)}>Update</button>
+        <button onclick={() => deleteCalendar(cal.id)}>Delete</button>
+      </div>
+    {/each}
+    <div class="userline" style="background: #eee;">
+      <input type="text" bind:value={newCalendar.id} placeholder="ID" />
+      <input type="text" bind:value={newCalendar.name} placeholder="Name" />
+      <input type="text" bind:value={newCalendar.url} placeholder="ICal URL" />
+      <input type="text" bind:value={newCalendar.color} placeholder="Color" style="width: 40px" />
+      <button onclick={addCalendar}>Add</button>
     </div>
   </div>
 

@@ -106,6 +106,13 @@ export const locations = pgTable("locations", {
   label: text("label").notNull(),
 });
 
+export const calendars = pgTable("calendars", {
+  id: text("id").primaryKey(),
+  url: text("url").notNull(),
+  color: text("color").notNull(),
+  name: text("name").notNull(),
+});
+
 export const appConfig = pgTable("app_config", {
   key: text("key").primaryKey(), // e.g., 'GITHUB_USERNAME'
   value: text("value").notNull(),

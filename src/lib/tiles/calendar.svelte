@@ -1,12 +1,13 @@
 <!-- JS Part -->
 <script lang="ts">
+    
 </script>
 <!-- HTML Part -->
 <div class="item">
     <div class="box">
         <section>
             <div class="item">
-                
+                Currently in 
             </div>
             <div class="item">
 
