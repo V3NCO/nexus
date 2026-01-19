@@ -36,9 +36,9 @@ export async function POST({ locals, request }: RequestEvent): Promise<Response>
 
 	try {
 		const body = await request.json();
-		const { id, url, color, name } = body;
+		const { id, url, color, name, username, password } = body;
 
-		if (!id || !url || !color || !name) {
+		if (!id || !url || !color || !name || !username || !password ) {
 			return json({ error: 'Missing required fields' }, { status: 400 });
 		}
 
@@ -48,7 +48,9 @@ export async function POST({ locals, request }: RequestEvent): Promise<Response>
 				id,
 				url,
 				color,
-				name
+        name,
+        username,
+        password
 			})
 			.returning();
 

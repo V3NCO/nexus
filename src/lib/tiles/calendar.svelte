@@ -1,13 +1,38 @@
 <!-- JS Part -->
 <script lang="ts">
-    
+    import { type Calendar } from '$lib/config';
+    import { authClient } from "$lib/auth/auth-client";
+
+    type CalendarData = Calendar & {
+      lnglat: { lng: number; lat: number };
+    };
+
+    let calendars = $state<CalendarData[]>([]);
+    const session = authClient.useSession();
+
+    const fetchCalendars = async () => {
+      const res = await fetch('/api/calendars');
+      const cals: Calendar[] = await res.json();
+
+      for (const cal of cals) {
+        const response = await fetch(`/api/calendar/${cal.id}`);
+        const data = await response.json();
+        calendars.push({ ...cal, lnglat: { lng: data.lng, lat: data.lat } });
+      }
+    };
+
+    $effect(() => {
+      if (session) {
+        fetchCalendars();
+      }
+    });
 </script>
 <!-- HTML Part -->
 <div class="item">
     <div class="box">
         <section>
             <div class="item">
-                Currently in 
+                Currently in:
             </div>
             <div class="item">
 

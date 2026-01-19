@@ -31,7 +31,7 @@
   let locations = $state<any[]>([]);
   let calendars = $state<any[]>([]);
   let newLocation = $state({ id: '', hassid: '', emoji: '', label: '' });
-  let newCalendar = $state({ id: '', url: '', color: '', name: '' });
+  let newCalendar = $state({ id: '', url: '', color: '', name: '', username: '', password: '' });
 
   const fetchData = async () => {
     try {
@@ -110,7 +110,7 @@
         body: JSON.stringify(newCalendar)
       });
       if (res.ok) {
-        newCalendar = { id: '', url: '', color: '', name: '' };
+        newCalendar = { id: '', url: '', color: '', name: '', username: '', password: '' };
         fetchData();
       }
     } catch (e) {
@@ -120,7 +120,7 @@
 
   const updateCalendar = async (cal: any) => {
     try {
-      await fetch(`/api/calendar/${loc.id}`, {
+      await fetch(`/api/calendar/${cal.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(cal)
@@ -180,7 +180,9 @@
       <div class="userline">
         <input type="text" bind:value={cal.name} placeholder="Name" />
         <input type="text" bind:value={cal.url} placeholder="ICal URL" />
-        <input type="text" bind:value={cal.emoji} placeholder="Color" style="width: 40px" />
+        <input type="text" bind:value={cal.color} placeholder="Color" style="width: 100px" />
+        <input type="text" bind:value={cal.username} placeholder="Env var for username" />
+        <input type="text" bind:value={cal.password} placeholder="Env var for password" />
         <button onclick={() => updateCalendar(cal)}>Update</button>
         <button onclick={() => deleteCalendar(cal.id)}>Delete</button>
       </div>
@@ -189,7 +191,9 @@
       <input type="text" bind:value={newCalendar.id} placeholder="ID" />
       <input type="text" bind:value={newCalendar.name} placeholder="Name" />
       <input type="text" bind:value={newCalendar.url} placeholder="ICal URL" />
-      <input type="text" bind:value={newCalendar.color} placeholder="Color" style="width: 40px" />
+      <input type="text" bind:value={newCalendar.color} placeholder="Color" style="width: 100px" />
+      <input type="text" bind:value={newCalendar.username} placeholder="Env var for username" />
+      <input type="text" bind:value={newCalendar.password} placeholder="Env var for password" />
       <button onclick={addCalendar}>Add</button>
     </div>
   </div>
