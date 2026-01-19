@@ -111,6 +111,8 @@ export const calendars = pgTable("calendars", {
   url: text("url").notNull(),
   color: text("color").notNull(),
   name: text("name").notNull(),
+  username: text("usernamevar").notNull(),
+  password: text("passwordvar").notNull()
 });
 
 export const appConfig = pgTable("app_config", {

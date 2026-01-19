@@ -4,3 +4,12 @@ export type Location = {
 	emoji: string;
 	label: string;
 };
+
+export type Calendar = {
+  id: string;
+  url: string;
+  color: string;
+  label: string;
+  usernameenv: string;
+  passwordenv: string;
+}

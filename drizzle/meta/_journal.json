@@ -36,6 +36,13 @@
       "when": 1768835349186,
       "tag": "0004_fantastic_franklin_storm",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1768850736469,
+      "tag": "0005_giant_veda",
+      "breakpoints": true
     }
   ]
 }
