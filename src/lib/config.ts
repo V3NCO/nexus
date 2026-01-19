@@ -9,7 +9,7 @@ export type Calendar = {
   id: string;
   url: string;
   color: string;
-  label: string;
+  name: string;
   usernameenv: string;
   passwordenv: string;
 }

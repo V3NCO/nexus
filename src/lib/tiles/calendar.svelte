@@ -3,8 +3,33 @@
     import { type Calendar } from '$lib/config';
     import { authClient } from "$lib/auth/auth-client";
 
+    type CalendarEvent = {
+      summary: string;
+      color: string | null;
+      start: {
+        year: number;
+        month: number;
+        day: number;
+        hour: number;
+        minute: number;
+        second: number;
+        isDate: boolean;
+        timezone: string;
+      };
+      end: {
+        year: number;
+        month: number;
+        day: number;
+        hour: number;
+        minute: number;
+        second: number;
+        isDate: boolean;
+        timezone: string;
+      };
+    };
+
     type CalendarData = Calendar & {
-      lnglat: { lng: number; lat: number };
+      events: CalendarEvent[];
     };
 
     let calendars = $state<CalendarData[]>([]);
@@ -16,8 +41,8 @@
 
       for (const cal of cals) {
         const response = await fetch(`/api/calendar/${cal.id}`);
-        const data = await response.json();
-        calendars.push({ ...cal, lnglat: { lng: data.lng, lat: data.lat } });
+        const events: CalendarEvent[] = await response.json();
+        calendars.push({ ...cal, events });
       }
     };
 
@@ -33,6 +58,16 @@
         <section>
             <div class="item">
                 Currently in:
+                {#each calendars as calendar}
+                    <h3>{calendar.name}</h3>
+                    <ul>
+                        {#each calendar.events as event}
+                            <li>
+                                {event.summary}- {event.start.year}/{event.start.month}/{event.start.day} {event.start.hour+1}:{event.start.minute}
+                            </li>
+                        {/each}
+                    </ul>
+                {/each}
             </div>
             <div class="item">
 
