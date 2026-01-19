@@ -44,7 +44,7 @@ export async function GET({url, locals, params}: RequestEvent): Promise<Response
                 var comp = new ICAL.Component(jcalData);
                 let events = [];
 
-                for (event in await comp.getAllSubcomponents("vevent")) {
+                for (const event of await comp.getAllSubcomponents("vevent")) {
                   let ievent = new ICAL.Event(event);
                   events.push({
                     "summary": ievent.summary,
@@ -55,7 +55,7 @@ export async function GET({url, locals, params}: RequestEvent): Promise<Response
                   })
                 };
 
-                return events.json();
+                return events;
             },
             60000
         );
