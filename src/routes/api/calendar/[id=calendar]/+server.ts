@@ -8,13 +8,7 @@ import {eq} from 'drizzle-orm';
 import ICAL from 'ical.js';
 
 export async function GET({url, locals, params}: RequestEvent): Promise<Response> {
-    const user = locals.user;
     const [item] = await db.select().from(calendars).where(eq(calendars.id, params.id!)).limit(1);
-
-    if (!user) {
-        return json({error: 'Unauthorized'}, {status: 401});
-    }
-
     if (!item) {
         return json({error: 'Calendar not found'}, {status: 404});
     }

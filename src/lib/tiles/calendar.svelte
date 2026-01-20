@@ -47,9 +47,7 @@
     };
 
     $effect(() => {
-      if (session) {
         fetchCalendars();
-      }
     });
 </script>
 <!-- HTML Part -->

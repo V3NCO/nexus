@@ -4,11 +4,6 @@ import { auth } from '$lib/auth/auth';
 import { json, type RequestEvent } from '@sveltejs/kit';
 
 export async function GET({ locals }: RequestEvent): Promise<Response> {
-	const user = locals.user;
-	if (!user) {
-		return json({ error: 'Unauthorized' }, { status: 401 });
-	}
-
 	try {
 		const allCalendars = await db.select().from(calendars);
 		return json(allCalendars);
