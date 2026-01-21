@@ -86,6 +86,33 @@
       return null;
     }
 
+    function getLastEventEndTime(events: CalendarEvent[], currentTime: Date): Date | null {
+          const timeUTC = new Date(currentTime.getTime() + currentTime.getTimezoneOffset() * 60000);
+
+          const pastEvents = events
+            .map(event => ({
+              ...event,
+              endDate: new Date(Date.UTC(
+                event.end.year,
+                event.end.month - 1,
+                event.end.day,
+                event.end.hour,
+                event.end.minute,
+                event.end.second
+              ))
+            }))
+            .filter(event => event.endDate < timeUTC);
+
+          if (pastEvents.length > 0) {
+            const lastEvent = pastEvents.reduce((latest, current) => {
+              return current.endDate > latest.endDate ? current : latest;
+            });
+            return lastEvent.endDate;
+          }
+          return null;
+        }
+
+
     function getNextEvent(events: CalendarEvent[], currentTime: Date): CalendarEvent | null {
       const timeUTC = new Date(currentTime.getTime() + currentTime.getTimezoneOffset() * 60000);
 
@@ -149,12 +176,35 @@
               const totalTime = endDate.getTime()-startDate.getTime();
               progress = (timeElapsed/totalTime)*100
               currentColor.set($selectedEvent.color || "rgb(66, 133, 244)");
-              console.log($currentColor)
               eventOngoing.set(true);
             } else {
               eventOngoing.set(false);
               const nextEvent = getNextEvent(allEvents, currentTime);
-              console.log(`Next Event: ${nextEvent ? nextEvent.summary : 'No upcoming events'}`);
+              selectedEvent.set(nextEvent)
+              if (nextEvent) {
+                const lastEndTime = getLastEventEndTime(allEvents, currentTime);
+                if (lastEndTime) {
+                  const startDate = new Date(Date.UTC(
+                    $selectedEvent?.start.year,
+                    $selectedEvent?.start.month - 1,
+                    $selectedEvent?.start.day,
+                    $selectedEvent?.start.hour,
+                    $selectedEvent?.start.minute,
+                    $selectedEvent?.start.second
+                  ))
+
+                  const timeElapsed = currentTime.getTime() - lastEndTime?.getTime();
+                  const totalTime = startDate.getTime()-lastEndTime?.getTime();
+                  progress = (timeElapsed/totalTime)*100
+                  currentColor.set($selectedEvent.color || "rgb(66, 133, 244)");
+                } else {
+                  currentColor.set("#FFFFFF");
+                  progress = 0
+                }
+              } else {
+                currentColor.set("#FFFFFF");
+                progress = 0
+              }
               selectedEvent.set(nextEvent);
             }
         }, 1000);
@@ -172,11 +222,11 @@
         <section>
             <div class="item left">
                 {#if $eventOngoing}
-                    <p>Currently in: {$selectedEvent?.summary}</p>
+                    <p class="currtitle"><strong>Currently in: {$selectedEvent?.summary}</strong></p>
                 {:else if $selectedEvent}
-                    <p>Next event: {$selectedEvent.summary}</p>
+                    <p class="currtitle"><strong>Next event: {$selectedEvent.summary}</strong></p>
                 {:else}
-                    <p>No upcoming events</p>
+                    <p class="currtitle"><strong>No upcoming events</strong></p>
                 {/if}
                 <div
                     class="circular-bar"
@@ -225,8 +275,14 @@
 
     .left {
         padding-left: 1vmax;
+        padding-right: 2vmax;
+        align-items: center;
     }
 
+    .currtitle {
+        margin-bottom: 1em;
+        margin-top: 1em;
+    }
 
     .circular-bar{
         width: 60%;
