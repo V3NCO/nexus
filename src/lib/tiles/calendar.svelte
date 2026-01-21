@@ -37,7 +37,9 @@
     const events = writable<CalendarEvent[]>([]);
     const time = writable(new Date());
     const eventOngoing = writable(false);
+    const currentColor = writable("rgb(66, 133, 244)")
     const selectedEvent = writable<CalendarEvent | null>(null);
+    let progress = 0;
 
     const fetchCalendars = async () => {
       const res = await fetch('/api/calendars');
@@ -56,8 +58,8 @@
       events.set(allEvents);
     };
 
-    function getCurrentEvent(events) {
-      const timeUTC = new Date($time.getTime() + $time.getTimezoneOffset() * 60000);
+    function getCurrentEvent(events: CalendarEvent[], currentTime: Date): CalendarEvent | null {
+      const timeUTC = new Date();
 
       for (const event of events) {
         const start = new Date(Date.UTC(
@@ -77,22 +79,15 @@
             event.end.minute,
             event.end.second
         ));
-
-        console.log(`Checking event: ${event.summary}`);
-        console.log(`Start: ${start}, End: ${end}, Current Time: ${timeUTC}`);
-
         if (timeUTC >= start && timeUTC <= end) {
-          console.log("Current event found:", event);
           return event;
         }
       }
-      console.log("No current event found.");
       return null;
     }
 
-
     function getNextEvent(events: CalendarEvent[], currentTime: Date): CalendarEvent | null {
-      const timeUTC = new Date(currentTime.toISOString());
+      const timeUTC = new Date(currentTime.getTime() + currentTime.getTimezoneOffset() * 60000);
 
       const futureEvents = events
         .map(event => ({
@@ -124,14 +119,37 @@
         }, 1000);
 
         const checkCurrent = setInterval(() => {
-            console.log("Checking for current or next event...");
-            const currentTime = $time;
-            const allEvents = $events;
+            let currentTime: Date;
+            let allEvents: CalendarEvent[];
+
+            time.subscribe(value => currentTime = value)();
+            events.subscribe(value => allEvents = value)();
 
             const currentEvent = getCurrentEvent(allEvents, currentTime);
             if (currentEvent) {
               console.log(`Event Ongoing: ${currentEvent.summary}`);
               selectedEvent.set(currentEvent);
+              const startDate = new Date(Date.UTC(
+                $selectedEvent?.start.year,
+                $selectedEvent?.start.month - 1,
+                $selectedEvent?.start.day,
+                $selectedEvent?.start.hour,
+                $selectedEvent?.start.minute,
+                $selectedEvent?.start.second
+              ))
+              const endDate = new Date(Date.UTC(
+                $selectedEvent?.end.year,
+                $selectedEvent?.end.month - 1,
+                $selectedEvent?.end.day,
+                $selectedEvent?.end.hour,
+                $selectedEvent?.end.minute,
+                $selectedEvent?.end.second
+              ))
+              const timeElapsed = currentTime.getTime() -startDate?.getTime();
+              const totalTime = endDate.getTime()-startDate.getTime();
+              progress = (timeElapsed/totalTime)*100
+              currentColor.set($selectedEvent.color || "rgb(66, 133, 244)");
+              console.log($currentColor)
               eventOngoing.set(true);
             } else {
               eventOngoing.set(false);
@@ -139,28 +157,30 @@
               console.log(`Next Event: ${nextEvent ? nextEvent.summary : 'No upcoming events'}`);
               selectedEvent.set(nextEvent);
             }
-        }, 20000);
+        }, 1000);
 
         return () => {
             clearInterval(clockInterval);
             clearInterval(checkCurrent);
         };
     });
-
     $: progressAngle = `${progress / 100 * 360}deg`;
-    let progress = 70;
 </script>
 <!-- HTML Part -->
 <div class="item">
     <div class="box">
         <section>
             <div class="item left">
-                {#if eventOngoing}
-                    Currently in: {$selectedEvent?.summary}
+                {#if $eventOngoing}
+                    <p>Currently in: {$selectedEvent?.summary}</p>
+                {:else if $selectedEvent}
+                    <p>Next event: {$selectedEvent.summary}</p>
+                {:else}
+                    <p>No upcoming events</p>
                 {/if}
                 <div
                     class="circular-bar"
-                    style="background: conic-gradient(rgb(66, 133, 244) ${progressAngle}, rgb(232, 240, 247) 0deg);">
+                    style="background: conic-gradient({$currentColor} {progressAngle}, rgb(232, 240, 247) 0deg);">
                 </div>
             </div>
             <div class="item">
