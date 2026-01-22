@@ -39,6 +39,7 @@
     const eventOngoing = writable(false);
     const currentColor = writable("rgb(66, 133, 244)")
     const selectedEvent = writable<CalendarEvent | null>(null);
+    const timeLeft = writable("");
     let progress = 0;
 
     const fetchCalendars = async () => {
@@ -84,6 +85,17 @@
         }
       }
       return null;
+    }
+
+    function msToTime(ms: number) {
+      const totalSeconds = Math.floor(ms / 1000);
+      const hours = Math.floor(totalSeconds / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+
+      return [hours, minutes, seconds]
+        .map(v => v.toString().padStart(2, '0'))
+        .join(':');
     }
 
     function getLastEventEndTime(events: CalendarEvent[], currentTime: Date): Date | null {
@@ -195,6 +207,8 @@
 
                   const timeElapsed = currentTime.getTime() - lastEndTime?.getTime();
                   const totalTime = startDate.getTime()-lastEndTime?.getTime();
+                  const leftTimeMS = totalTime - timeElapsed;
+                  timeLeft.set(msToTime(leftTimeMS))
                   progress = (timeElapsed/totalTime)*100
                   currentColor.set($selectedEvent.color || "rgb(66, 133, 244)");
                 } else {
@@ -231,6 +245,7 @@
                 <div
                     class="circular-bar"
                     style="background: conic-gradient({$currentColor} {progressAngle}, rgb(232, 240, 247) 0deg);">
+                        <p><strong>{$timeLeft}</strong></p>
                 </div>
             </div>
             <div class="item">
@@ -307,5 +322,10 @@
         border-radius: 50%;
         box-shadow: inset 6px 6px 10px -1px rgba(0,0,0,0.15),
         inset -6px -6px 10px -1px rgba(255,255,255,0.7);
+    }
+
+    .circular-bar p {
+           position: relative;
+           z-index: 1;
     }
 </style>
