@@ -7,6 +7,7 @@
   import TimeWidget from "$lib/tiles/time.svelte"
   import LastMsgWidget from "$lib/tiles/slacklastmsg.svelte"
   import CalendarWidget from "$lib/tiles/calendar.svelte"
+  import WakatimeWidget from "$lib/tiles/wakatime.svelte"
   import { authClient } from "$lib/auth/auth-client";
   const session = authClient.useSession();
   // import TemplateSmall from "$lib/tiles/template_small.svelte"
@@ -40,6 +41,7 @@
         <div class="item"><LastMsgWidget/></div>
         <div class="item"><TimeWidget/></div>
         <div class="item item-wide"><CalendarWidget/></div>
+        <div class="item"><WakatimeWidget/></div>
         <!-- <div class="item"><TemplateSmall/></div> -->
         <!-- <div class="item item-wide"><TemplateWide/></div> -->
     </div>
