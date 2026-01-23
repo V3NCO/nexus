@@ -3,6 +3,7 @@
     import { writable } from 'svelte/store';
     import { type Calendar } from '$lib/config';
     import { onMount } from 'svelte';
+	import { read } from '$app/server';
 
     type CalendarEvent = {
       summary: string;
@@ -41,7 +42,6 @@
     const selectedEvent = writable<CalendarEvent | null>(null);
     const timeLeft = writable("");
     let progress = 0;
-    const preparedList = writable<Object>({});
 
     const fetchCalendars = async () => {
       const res = await fetch('/api/calendars');
@@ -81,13 +81,13 @@
               templist.push(event2)
             }
           }
-          Object.defineProperty(finallist, `${evadate.day}-${evadate.month}-${evadate.year}`, {value: templist, writable: false})
+          Object.defineProperty(finallist, `${evadate.day.toString().padStart(2, "0")}-${evadate.month.toString().padStart(2, "0")}-${evadate.year}`, {value: templist, writable: false, enumerable: true})
         }
       }
       return finallist;
     }
 
-    function getCurrentEvent(events: CalendarEvent[], currentTime: Date): CalendarEvent | null {
+    function getCurrentEvent(events: CalendarEvent[]): CalendarEvent | null {
       const timeUTC = new Date();
 
       for (const event of events) {
@@ -180,8 +180,8 @@
     }
 
     onMount(() => {
-        preparedList.set(prepareList($events))
         fetchCalendars();
+
         const clockInterval = setInterval(() => {
             time.set(new Date());
         }, 1000);
@@ -193,67 +193,65 @@
             time.subscribe(value => currentTime = value)();
             events.subscribe(value => allEvents = value)();
 
-            const currentEvent = getCurrentEvent(allEvents, currentTime);
+            const currentEvent = getCurrentEvent(allEvents);
             if (currentEvent) {
-              console.log(`Event Ongoing: ${currentEvent.summary}`);
-              selectedEvent.set(currentEvent);
-              const startDate = new Date(Date.UTC(
-                $selectedEvent?.start.year,
-                $selectedEvent?.start.month - 1,
-                $selectedEvent?.start.day,
-                $selectedEvent?.start.hour,
-                $selectedEvent?.start.minute,
-                $selectedEvent?.start.second
-              ))
-              const endDate = new Date(Date.UTC(
-                $selectedEvent?.end.year,
-                $selectedEvent?.end.month - 1,
-                $selectedEvent?.end.day,
-                $selectedEvent?.end.hour,
-                $selectedEvent?.end.minute,
-                $selectedEvent?.end.second
-              ))
-              const timeElapsed = currentTime.getTime() -startDate?.getTime();
-              const totalTime = endDate.getTime()-startDate.getTime();
-              progress = (timeElapsed/totalTime)*100
-              currentColor.set($selectedEvent.color || "rgb(66, 133, 244)");
-              eventOngoing.set(true);
-            } else {
-              eventOngoing.set(false);
-              const nextEvent = getNextEvent(allEvents, currentTime);
-              selectedEvent.set(nextEvent)
-              if (nextEvent) {
-                const lastEndTime = getLastEventEndTime(allEvents, currentTime);
-                if (lastEndTime) {
-                  const startDate = new Date(Date.UTC(
-                    $selectedEvent?.start.year,
-                    $selectedEvent?.start.month - 1,
-                    $selectedEvent?.start.day,
-                    $selectedEvent?.start.hour,
-                    $selectedEvent?.start.minute,
-                    $selectedEvent?.start.second
-                  ))
+                console.log(`Event Ongoing: ${currentEvent.summary}`);
+                selectedEvent.set(currentEvent);
 
-                  const timeElapsed = currentTime.getTime() - lastEndTime?.getTime();
-                  const totalTime = startDate.getTime()-lastEndTime?.getTime();
-                  const leftTimeMS = totalTime - timeElapsed;
-                  timeLeft.set(msToTime(leftTimeMS))
-                  progress = (timeElapsed/totalTime)*100
-                  currentColor.set($selectedEvent.color || "rgb(66, 133, 244)");
+                const startDate = new Date(Date.UTC(
+                    currentEvent.start.year,
+                    currentEvent.start.month - 1,
+                    currentEvent.start.day,
+                    currentEvent.start.hour,
+                    currentEvent.start.minute,
+                    currentEvent.start.second
+                ));
+                const endDate = new Date(Date.UTC(
+                    currentEvent.end.year,
+                    currentEvent.end.month - 1,
+                    currentEvent.end.day,
+                    currentEvent.end.hour,
+                    currentEvent.end.minute,
+                    currentEvent.end.second
+                ));
+                const timeElapsed = currentTime.getTime() - startDate.getTime();
+                const totalTime = endDate.getTime() - startDate.getTime();
+                progress = (timeElapsed / totalTime) * 100;
+                currentColor.set(currentEvent.color || "rgb(66, 133, 244)");
+                eventOngoing.set(true);
+            } else {
+                eventOngoing.set(false);
+                const nextEvent = getNextEvent(allEvents, currentTime);
+                selectedEvent.set(nextEvent);
+
+                if (nextEvent) {
+                    const lastEndTime = getLastEventEndTime(allEvents, currentTime);
+                    if (lastEndTime) {
+                        const startDate = new Date(Date.UTC(
+                            nextEvent.start.year,
+                            nextEvent.start.month - 1,
+                            nextEvent.start.day,
+                            nextEvent.start.hour,
+                            nextEvent.start.minute,
+                            nextEvent.start.second
+                        ));
+
+                        const timeElapsed = currentTime.getTime() - lastEndTime.getTime();
+                        const totalTime = startDate.getTime() - lastEndTime.getTime();
+                        const leftTimeMS = totalTime - timeElapsed;
+                        timeLeft.set(msToTime(leftTimeMS));
+                        progress = (timeElapsed / totalTime) * 100;
+                        currentColor.set(nextEvent.color || "rgb(66, 133, 244)");
+                    } else {
+                        currentColor.set("#FFFFFF");
+                        progress = 0;
+                    }
                 } else {
-                  currentColor.set("#FFFFFF");
-                  progress = 0
+                    currentColor.set("#FFFFFF");
+                    progress = 0;
                 }
-              } else {
-                currentColor.set("#FFFFFF");
-                progress = 0
-              }
-              selectedEvent.set(nextEvent);
             }
         }, 1000);
-        const calInterval = setInterval(() => {
-            preparedList.set(prepareList($events))
-        }, 1200000);
 
         return () => {
             clearInterval(calInterval);
@@ -262,6 +260,7 @@
         };
     });
     $: progressAngle = `${progress / 100 * 360}deg`;
+    $: preparedList = prepareList($events);
 </script>
 <!-- HTML Part -->
 <div class="item">
@@ -282,12 +281,15 @@
                 </div>
             </div>
             <div class="item">
-                {#each Object.entries($preparedList) as d}
+                {console.log(preparedList)}
+                {console.log(Object.entries(preparedList))}
+                {#each Object.entries(preparedList) as d}
+                    {console.log(d)}
                     <p style="margin: -0.4em; font-size: 0.8em;">{d[0]}</p>
                     {#each d[1] as e}
                         <div class="cal-element" style="background:linear-gradient({e.color},{e.color}) left/0.7em 100% no-repeat;;">
                             <p class="subject"><strong>{e.summary}</strong></p>
-                            <span class="timeline">🕙 {e.start.hour}:{e.start.minute} – {e.end.hour}:{e.end.minute}</span>
+                            <span class="timeline">🕙 {e.start.hour.toString().padStart(2, "0")}:{e.start.minute.toString().padStart(2, "0")} – {e.end.hour.toString().padStart(2, "0")}:{e.end.minute.toString().padStart(2, "0")}</span>
                         </div>
                     {/each}
                 {/each}

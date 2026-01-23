@@ -39,7 +39,7 @@ export async function GET({url, locals, params}: RequestEvent): Promise<Response
                 const tomorrow = new Date(today);
                 tomorrow.setUTCDate(today.getUTCDate() + 1);
                 const dayAfterTomorrow = new Date(today);
-                dayAfterTomorrow.setUTCDate(today.getUTCDate() + 2);
+                dayAfterTomorrow.setUTCDate(today.getUTCDate() + 4);
 
                 for (const event of comp.getAllSubcomponents("vevent")) {
                   let ievent = new ICAL.Event(event);
