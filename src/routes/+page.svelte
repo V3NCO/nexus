@@ -21,11 +21,9 @@
             permission: { "location": ["read"] } as any
         });
         canReadLocation = canReadLocationLocal.data?.success
-        console.log(canReadLocation)
         loading = false;
       })();
     } else {
-      console.log("Nopee")
       canReadLocation = false
       loading = false;
     }

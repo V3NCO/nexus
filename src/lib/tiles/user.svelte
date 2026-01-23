@@ -14,11 +14,9 @@
               permission: { "adminPanel": ["access"] }
           });
           isAdmin = isAdminLocal.data?.success
-          console.log(isAdmin)
           loading = false;
         })();
       } else {
-        console.log("Nopee")
         isAdmin = false
         loading = false;
       }

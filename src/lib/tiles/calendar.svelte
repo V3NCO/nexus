@@ -195,7 +195,6 @@
 
             const currentEvent = getCurrentEvent(allEvents);
             if (currentEvent) {
-                console.log(`Event Ongoing: ${currentEvent.summary}`);
                 selectedEvent.set(currentEvent);
 
                 const startDate = new Date(Date.UTC(
@@ -281,10 +280,7 @@
                 </div>
             </div>
             <div class="item">
-                {console.log(preparedList)}
-                {console.log(Object.entries(preparedList))}
                 {#each Object.entries(preparedList) as d}
-                    {console.log(d)}
                     <p style="margin: -0.4em; font-size: 0.8em;">{d[0]}</p>
                     {#each d[1] as e}
                         <div class="cal-element" style="background:linear-gradient({e.color},{e.color}) left/0.7em 100% no-repeat;;">
