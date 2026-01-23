@@ -13,6 +13,8 @@ Well I can give you a roadmap of what's done and what I was (originally) plannin
 - [x] The current time for where I am
 - [x] Latest git commit + activity
 - [x] Last slack public channel message
+- [ ] Wakatime/Hackatime status
+- [ ] Current timetable/Calendar
 - [ ] Phone status:
   - Battery
   - DND
@@ -27,7 +29,6 @@ Well I can give you a roadmap of what's done and what I was (originally) plannin
   - Active
   - Angle where its open displayed with a 3d model would be nice?
 - [ ] Live age counter
-- [ ] Current timetable/Calendar
 - [ ] Heartrate?
 - [ ] HwF status?
 - [ ] Flipper Zero?
