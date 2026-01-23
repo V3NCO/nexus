@@ -41,6 +41,7 @@
     const selectedEvent = writable<CalendarEvent | null>(null);
     const timeLeft = writable("");
     let progress = 0;
+    const preparedList = writable<Object>({});
 
     const fetchCalendars = async () => {
       const res = await fetch('/api/calendars');
@@ -58,6 +59,33 @@
       const allEvents = fetchedCalendars.flatMap((cal) => cal.events);
       events.set(allEvents);
     };
+
+    function prepareList(events: CalendarEvent[]): Object {
+      let items
+      if (events.length !> 4) {
+        items = events.slice(0, 4)
+      } else {
+        items = events
+      }
+
+      let dates: Date[] = []
+      let finallist = {};
+      for (const event of items) {
+        const evdate = new Date(event.start.year, event.start.month-1, event.start.day)
+        const evadate = {day: event.start.day, month: event.start.month, year: event.start.year}
+        if (!(!!dates.find(item => {return item.getTime() == evdate.getTime()}))) {
+          dates.push(evdate)
+          let templist = []
+          for (const event2 of items) {
+            if (event2.start.day == evadate.day && event2.start.month == evadate.month && event2.start.year == evadate.year) {
+              templist.push(event2)
+            }
+          }
+          Object.defineProperty(finallist, `${evadate.day}-${evadate.month}-${evadate.year}`, {value: templist, writable: false})
+        }
+      }
+      return finallist;
+    }
 
     function getCurrentEvent(events: CalendarEvent[], currentTime: Date): CalendarEvent | null {
       const timeUTC = new Date();
@@ -152,6 +180,7 @@
     }
 
     onMount(() => {
+        preparedList.set(prepareList($events))
         fetchCalendars();
         const clockInterval = setInterval(() => {
             time.set(new Date());
@@ -222,8 +251,12 @@
               selectedEvent.set(nextEvent);
             }
         }, 1000);
+        const calInterval = setInterval(() => {
+            preparedList.set(prepareList($events))
+        }, 1200000);
 
         return () => {
+            clearInterval(calInterval);
             clearInterval(clockInterval);
             clearInterval(checkCurrent);
         };
@@ -249,7 +282,15 @@
                 </div>
             </div>
             <div class="item">
-
+                {#each Object.entries($preparedList) as d}
+                    <p style="margin: -0.4em; font-size: 0.8em;">{d[0]}</p>
+                    {#each d[1] as e}
+                        <div class="cal-element" style="background:linear-gradient({e.color},{e.color}) left/0.7em 100% no-repeat;;">
+                            <p class="subject"><strong>{e.summary}</strong></p>
+                            <span class="timeline">🕙 {e.start.hour}:{e.start.minute} – {e.end.hour}:{e.end.minute}</span>
+                        </div>
+                    {/each}
+                {/each}
             </div>
         </section>
     </div>
@@ -327,5 +368,20 @@
     .circular-bar p {
            position: relative;
            z-index: 1;
+    }
+
+    .cal-element {
+        border-radius: 1em;
+        margin-right: 1em;
+        margin-left: 1em;
+        margin-bottom: 0.2em;
+        margin-top: 0.2em;
+        border: 0.2em solid black;
+        padding-left: 1em;
+    }
+
+    .timeline {
+        color: #888888;
+        font-weight: 350;
     }
 </style>
