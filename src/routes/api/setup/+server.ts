@@ -53,7 +53,10 @@ export const GET: RequestHandler = async ({ request }) => {
 				{ key: 'GITHUB_USERNAME', value: 'v3nco' },
 				{ key: 'HASS_TIMEZONE_ENTITY', value: 'sensor.pixel_8_pro_current_time_zone' },
 				{ key: 'LASTFM_USERNAME', value: 'v3nco' },
-				{ key: 'SLACK_ID', value: 'U08L7671TDG' }
+        { key: 'SLACK_ID', value: 'U08L7671TDG' },
+        { key: 'WAKATIME_URL', value: 'https://hackatime.hackclub.com/api/v1' },
+        { key: 'WAKATIME_USERNAME', value: 'Esther' }
+
 			];
 
 			for (const config of configs) {
