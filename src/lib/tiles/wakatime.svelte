@@ -32,6 +32,12 @@
                     <div class="indicator slacking" title="Not hacking at the moment..."></div>
                 {/if}
             </div>
+            <hr/>
+            <p><strong>Time hacked today:</strong> {wakatime_res?.todayTime}</p>
+            <p><strong>Projects today:</strong></p>
+            {#each wakatime_res?.projects as project}
+                <p><strong>{project.name}:</strong> {project.digital} - {project.percent}</p>
+            {/each}
         {/if}
     </div>
 </div>
@@ -89,5 +95,12 @@
         height: 1em;
         display: inline-flex;
         justify-content: space-between;
+        margin-bottom: 0.7em;
+    }
+
+    hr {
+        color: lightgray;
+        margin-bottom: 0.3em;
+
     }
 </style>
