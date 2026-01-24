@@ -13,8 +13,8 @@ Well I can give you a roadmap of what's done and what I was (originally) plannin
 - [x] The current time for where I am
 - [x] Latest git commit + activity
 - [x] Last slack public channel message
-- [ ] Wakatime/Hackatime status
-- [ ] Current timetable/Calendar
+- [ ] Wakatime/Hackatime status - So actually this is gonna use Hackatime API for now at least because they arent compatible rahhh
+- [x] Current timetable/Calendar
 - [ ] Phone status:
   - Battery
   - DND

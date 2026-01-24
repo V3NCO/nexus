@@ -3,7 +3,6 @@
     import { writable } from 'svelte/store';
     import { type Calendar } from '$lib/config';
     import { onMount } from 'svelte';
-	import { read } from '$app/server';
 
     type CalendarEvent = {
       summary: string;
