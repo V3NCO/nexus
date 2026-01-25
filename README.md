@@ -13,8 +13,9 @@ Well I can give you a roadmap of what's done and what I was (originally) plannin
 - [x] The current time for where I am
 - [x] Latest git commit + activity
 - [x] Last slack public channel message
-- [ ] Wakatime/Hackatime status - So actually this is gonna use Hackatime API for now at least because they arent compatible rahhh
+- [x] Wakatime/Hackatime status - So actually this is gonna use Hackatime API for now at least because they arent compatible rahhh
 - [x] Current timetable/Calendar
+- [ ] Live age counter
 - [ ] Phone status:
   - Battery
   - DND
@@ -28,7 +29,6 @@ Well I can give you a roadmap of what's done and what I was (originally) plannin
   - Connected
   - Active
   - Angle where its open displayed with a 3d model would be nice?
-- [ ] Live age counter
 - [ ] Heartrate?
 - [ ] HwF status?
 - [ ] Flipper Zero?
