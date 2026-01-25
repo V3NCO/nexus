@@ -6,7 +6,8 @@ import { cache } from '$lib/server/cache';
 
 export async function GET({ url, locals, params }: RequestEvent): Promise<Response> {
 	try {
-		const stepsEntity = await getConfigValue('HASS_STEPS_ENTITY');
+    const stepsEntity = await getConfigValue('HASS_STEPS_ENTITY');
+		const stepsObjective = await getConfigValue('STEPS_OBJECTIVE')
 		if (!stepsEntity) {
 			throw new Error('HASS_STEPS_ENTITY not found in config');
 		}
@@ -27,7 +28,10 @@ export async function GET({ url, locals, params }: RequestEvent): Promise<Respon
 					throw new Error(data.errors[0].message);
 				}
 
-				return data.state;
+        return {
+          steps: data.state,
+          objective: stepsObjective
+        };
 			},
 			20000
 		);

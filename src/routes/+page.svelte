@@ -9,6 +9,7 @@
   import CalendarWidget from "$lib/tiles/calendar.svelte"
   import WakatimeWidget from "$lib/tiles/wakatime.svelte"
   import AgeWidget from "$lib/tiles/age.svelte"
+  import StepsWidget from "$lib/tiles/steps.svelte"
   import { authClient } from "$lib/auth/auth-client";
   const session = authClient.useSession();
   // import TemplateSmall from "$lib/tiles/template_small.svelte"
@@ -44,6 +45,7 @@
         <div class="item item-wide"><CalendarWidget/></div>
         <div class="item"><WakatimeWidget/></div>
         <div class="item"><AgeWidget/></div>
+        <div class="item"><StepsWidget/></div>
         <!-- <div class="item"><TemplateSmall/></div> -->
         <!-- <div class="item item-wide"><TemplateWide/></div> -->
     </div>

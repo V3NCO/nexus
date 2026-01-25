@@ -57,7 +57,8 @@ export const GET: RequestHandler = async ({ request }) => {
         { key: 'WAKATIME_URL', value: 'https://hackatime.hackclub.com/api/v1' },
         { key: 'WAKATIME_USERNAME', value: 'Esther' },
         { key: 'BIRTHDATE', value: '2010-01-30T02:00:00Z' },
-        { key: 'HASS_STEPS_ENTITY', value: 'sensor.pixel_8_pro_daily_steps' }
+        { key: 'HASS_STEPS_ENTITY', value: 'sensor.pixel_8_pro_daily_steps' },
+        { key: 'STEPS_OBJECTIVE', value: '10000' }
 			];
 
 			for (const config of configs) {
