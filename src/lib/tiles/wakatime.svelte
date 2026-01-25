@@ -37,7 +37,7 @@
             <p><strong>Time hacked today:</strong> {wakatime_res?.todayTime}</p>
             <p><strong>Projects today:</strong></p>
             {#each wakatime_res?.projects as project}
-                <p><strong>{project.name}:</strong> {project.digital} - {project.percent}</p>
+                <p><strong>{project.name}:</strong> {project.digital} - {project.percent}%</p>
             {/each}
         {/if}
     </div>
