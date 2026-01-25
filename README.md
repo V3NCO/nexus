@@ -16,6 +16,7 @@ Well I can give you a roadmap of what's done and what I was (originally) plannin
 - [x] Wakatime/Hackatime status - So actually this is gonna use Hackatime API for now at least because they arent compatible rahhh
 - [x] Current timetable/Calendar
 - [x] Live age counter
+- [ ] Steps/Until 10K?
 - [ ] Phone status:
   - Battery
   - DND
@@ -32,7 +33,6 @@ Well I can give you a roadmap of what's done and what I was (originally) plannin
 - [ ] Heartrate?
 - [ ] HwF status?
 - [ ] Flipper Zero?
-- [ ] Steps/Until 10K?
 - [ ] Last transaction?
 - [ ] Eeping or not?
 
