@@ -16,7 +16,8 @@ Well I can give you a roadmap of what's done and what I was (originally) plannin
 - [x] Wakatime/Hackatime status - So actually this is gonna use Hackatime API for now at least because they arent compatible rahhh
 - [x] Current timetable/Calendar
 - [x] Live age counter
-- [x] Steps/Until 10K?
+- [x] Steps/Until 10K
+- [x] Steam currently playing
 - [ ] Phone status:
   - Battery
   - DND
