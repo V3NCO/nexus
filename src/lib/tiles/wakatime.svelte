@@ -4,6 +4,7 @@
 
 	let wakatime_res = $state<any | undefined>(undefined);
 	let loading = $state<boolean>(true);
+	let error
     onMount(async () => {
       try {
         let res = await fetch(`/api/wakatime`);

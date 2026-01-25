@@ -55,8 +55,8 @@ export const GET: RequestHandler = async ({ request }) => {
 				{ key: 'LASTFM_USERNAME', value: 'v3nco' },
         { key: 'SLACK_ID', value: 'U08L7671TDG' },
         { key: 'WAKATIME_URL', value: 'https://hackatime.hackclub.com/api/v1' },
-        { key: 'WAKATIME_USERNAME', value: 'Esther' }
-
+        { key: 'WAKATIME_USERNAME', value: 'Esther' },
+        { key: 'BIRTHDATE', value: '2010-01-30T02:00:00Z' }
 			];
 
 			for (const config of configs) {

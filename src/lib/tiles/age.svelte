@@ -1,12 +1,35 @@
 <!-- JS Part -->
 <script lang="ts">
     import { onMount, onDestroy } from 'svelte';
-    let now = Date.now()
-    const birthTimestamp = new Date('2010-01-30T02:00:00Z').getTime();
-    $: age = (now - birthTimestamp) / (1000 * 60 * 60 * 24 * 365.25);
 
+    let age = $state(0)
+    let birthdate = $state("2000-01-01T00:00:00Z");
+    let now = $state(Date.now())
+    let birthTimestamp
+
+    $effect(
+      () => {
+        birthTimestamp = new Date(birthdate).getTime();
+        age = (now - birthTimestamp) / (1000 * 60 * 60 * 24 * 365.25);
+      }
+    )
+
+
+    let birthdate_res = $state<any | undefined>(undefined);
+	let loading = $state<boolean>(true);
+	let error
     let interval: NodeJS.Timeout;
-    onMount(() => {
+    onMount(async () => {
+      try {
+        let res = await fetch(`/api/birthdate`);
+        let birthdate_res = await res.json();
+        birthdate = birthdate_res.birthdate
+        loading = false;
+      } catch (err:  any) {
+        error = err.message;
+        loading = false;
+      }
+
       interval = setInterval(() => {
         now = Date.now()
       }, 50);
