@@ -15,7 +15,7 @@ Well I can give you a roadmap of what's done and what I was (originally) plannin
 - [x] Last slack public channel message
 - [x] Wakatime/Hackatime status - So actually this is gonna use Hackatime API for now at least because they arent compatible rahhh
 - [x] Current timetable/Calendar
-- [ ] Live age counter
+- [x] Live age counter
 - [ ] Phone status:
   - Battery
   - DND
