@@ -49,16 +49,17 @@ export const GET: RequestHandler = async ({ request }) => {
 					.where(eq(user.id, adminUser.id));
 			}
 
-			const configs = [
-				{ key: 'GITHUB_USERNAME', value: 'v3nco' },
-				{ key: 'HASS_TIMEZONE_ENTITY', value: 'sensor.pixel_8_pro_current_time_zone' },
-				{ key: 'LASTFM_USERNAME', value: 'v3nco' },
+      const configs = [
+        { key: 'GITHUB_USERNAME', value: 'v3nco' },
+        { key: 'HASS_TIMEZONE_ENTITY', value: 'sensor.pixel_8_pro_current_time_zone' },
+        { key: 'LASTFM_USERNAME', value: 'v3nco' },
         { key: 'SLACK_ID', value: 'U08L7671TDG' },
         { key: 'WAKATIME_URL', value: 'https://hackatime.hackclub.com/api/v1' },
         { key: 'WAKATIME_USERNAME', value: 'Esther' },
         { key: 'BIRTHDATE', value: '2010-01-30T02:00:00Z' },
         { key: 'HASS_STEPS_ENTITY', value: 'sensor.pixel_8_pro_daily_steps' },
-        { key: 'STEPS_OBJECTIVE', value: '10000' }
+        { key: 'STEPS_OBJECTIVE', value: '10000' },
+        { key: 'STEAM_ID', value: '76561199032784414'}
 			];
 
 			for (const config of configs) {
