@@ -18,7 +18,7 @@ Well I can give you a roadmap of what's done and what I was (originally) plannin
 - [x] Live age counter
 - [x] Steps/Until 10K
 - [x] Steam currently playing
-- [ ] Phone status:
+- [x] Phone status:
   - Battery
   - DND
   - Connected
@@ -95,6 +95,17 @@ Copy .env.example and name that copy .env; we're going to fill each individual f
   - Single accurate location
 - Time zone sensor
   - Current time zone
+- Health Connect sensors
+  - Daily steps
+- Keyguard sensors
+  - Device locked
+- Network sensors
+  - Hotspot state
+- Battery sensors
+  - Battery level
+  - Battery state
+- Do not disturb sensor
+  -  Do not disturb sensor
 2. Go in your home assistant instance, click on your user
 3. Go in the security tab
 4. Create a Long-lived access token
@@ -142,6 +153,19 @@ Copy .env.example and name that copy .env; we're going to fill each individual f
 ```
 3. Install to hack club and copy the token to `SLACK_TOKEN=`
 
+#### Steam
+1. Go to https://steamcommunity.com/dev/apikey and get your API key
+2. set `STEAM_API_KEY=` to your api key
+
+#### Tailscale
+This one is just for a little status on the phone widget so its optional; if you do want it
+1. Go to https://login.tailscale.com/admin/settings/keys
+2. Get a API access token
+3. Set `TAILSCALE_KEY=` to that API key
+
+#### Wakatime
+1. Set `WAKATIME_API_KEY` to your api key for your wakatime instance
+
 ### Initial setup
 1. Set the env variable `DANGER_INITAL_RUN_THIS_CAN_GIVE_ADMIN_TO_ANYONE_WHEN_TRUE=` to `y`
 2. assuming you have your `.env` and `compose.yaml` in the same directory, run `docker compose up -d`
@@ -163,7 +187,17 @@ Copy .env.example and name that copy .env; we're going to fill each individual f
 18. `SLACK_ID` to your slack ID you can obtain in the #what-is-my-slack-id channel
 19. Go to your home assistant and search for an entity called 'Current time zone', click it, click the settings icon and copy the full Entity ID
 20. Set `HASS_TIMEZONE_ENTITY` to that Entity ID
-21. For Locations:
+21. (Optional) If you want to enable tailscale: 
+  - Set `TAILSCALE_PHONE_SHOW` to `true` and `TAILSCALE_PHONE_ID` to the device id of your phone 
+22. `STEAM_ID` to your steam ID
+23. `STEPS_OBJECTIVE` to the step quota you want to display on the step widget
+24. `WAKATIME_URL` to your wakatime api url
+25. `WAKATIME_USERNAME` to your wakatime username
+26. `BIRTHDATE` to your birthday in format `YYYY-MM-DDT02:00:00Z`
+27. `PHONE_MODEL` to either `P8P` or `Nothing3aCommunity`, see [[static/models/README.md]] to add your own model
+28. `HASS_STEPS_ENTITY` to the "Daily Steps" entity
+29. `HASS_PHONE_BATTERY_LEVEL`, `HASS_PHONE_BATTERY_STATE`, `HASS_PHONE_DND_SENSOR`, `HASS_PHONE_HOTSPOT_STATE`, `HASS_PHONE_LOCKED_STATUS` to the corresponding sensors we enabled earlier in Requirements - Home Assistant
+30. For Locations:
 - the label is kinda useless
 - the entity ID obtained by searching 'tracker' and doing the same but on this device tracker entity instead
 - the emoji one that shows up on the map
@@ -171,3 +205,8 @@ Copy .env.example and name that copy .env; we're going to fill each individual f
 - the map centers on the item with an `ID` of `1` when loaded
 
 And it's done! Now you can tell your friends to create an account and assign them according permissions from that admin page! You can still access the page without being logged in just without the hidden widgets
+
+## Updating
+
+1. Update the docker image
+2. Do the steps for Initial setup
