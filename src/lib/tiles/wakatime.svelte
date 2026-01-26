@@ -102,6 +102,5 @@
     hr {
         color: lightgray;
         margin-bottom: 0.3em;
-
     }
 </style>
