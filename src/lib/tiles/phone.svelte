@@ -14,6 +14,7 @@
     import AccessPointNetwork from "svelte-material-icons/AccessPointNetwork.svelte";
     import Cellphone from "svelte-material-icons/Cellphone.svelte";
     import Time from "svelte-time";
+	import { DirectionalLight } from "three";
 
 
 	let phone_res = $state<any | undefined>(undefined);
@@ -39,35 +40,41 @@
                     <T.PerspectiveCamera
                         makeDefault
                         position={[0, 0, 10]}
-                        fov={50}
+                        fov={60}
                     >
                         <OrbitControls
-                            enableZoom={true}
                             autoRotate
-                            autoRotateSpeed={1}
+                            minPolarAngle={1.5}
+                            maxPolarAngle={1.5}
+                            enableZoom={false}
                             enableDamping
                         />
                     </T.PerspectiveCamera>
-
-                    <T.DirectionalLight
-                        position={[3, 10, 10]}
-                        intensity={1}
-                    />
+                    {#if phone_res?.model == "P8P"}
+                        <T.DirectionalLight
+                            position={[0, -7, 0]}
+                            intensity={2}
+                        />
+                    {:else if phone_res?.model == "Nothing3aCommunity"}
+                        <T.DirectionalLight
+                            position={[3, 10, 10]}
+                            intensity={1}
+                        />
+                    {/if}
                     <T.AmbientLight intensity={0.2} />
 
                     <Float
                         floatIntensity={1}
                         floatingRange={[-0.5, 0.5]}
                     >
-                        <P8P rotation={[0, Math.PI, 0]} scale={60} />
+                        {#if phone_res?.model == "P8P"}
+                            <P8P rotation={[-0.60, 0.3, 0.6]} scale={60} position={[2, -3, 0]} />
+                        {:else if phone_res?.model == "Nothing3aCommunity"}
+                            <Nothing3aCommunity rotation={[-0.60, 0.3, 0.6]} scale={0.65} position={[2, -3, 0]} />
+                        {/if}
                     </Float>
 
-                    <ContactShadows
-                        scale={10}
-                        blur={2}
-                        far={2.5}
-                        opacity={0.5}
-                    />
+
                 </Canvas>
             </div>
             <div class="item right">
@@ -127,13 +134,11 @@
       flex-grow: 1;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      padding-top: 2em;
-      padding-bottom: 2em;
     }
 
     section {
         display: flex;
+        flex: 1;
         min-height: 0;
         overflow: scroll;
     }
@@ -141,6 +146,8 @@
     .right {
         padding-left: 2vmax;
         padding-right: 1vmax;
+        padding-top: 1.5em;
+        padding-bottom: 2em;
     }
     .left {
         height: 100%

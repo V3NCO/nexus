@@ -33,6 +33,10 @@ export async function GET({ url, locals, params }: RequestEvent): Promise<Respon
 		if (!tailscale_id) {
 		  throw new Error('TAILSCALE_PHONE_ID not found in config');
     }
+    const phone_model = await getConfigValue('PHONE_MODEL');
+		if (!phone_model) {
+			throw new Error('PHONE_MODEL not found in config');
+		}
 
 		const data_battery_lvl_entity = await cache.get(
 			`hass-entity-${battery_lvl_entity}`, async () => {
@@ -141,7 +145,8 @@ export async function GET({ url, locals, params }: RequestEvent): Promise<Respon
             enabled: true,
             connected: tailscale_device.connectedToControl,
             time: tailscale_device.lastSeen
-          }
+          },
+          model: phone_model
         }
       );
     } else {

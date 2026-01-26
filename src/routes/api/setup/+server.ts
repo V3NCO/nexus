@@ -60,13 +60,14 @@ export const GET: RequestHandler = async ({ request }) => {
         { key: 'HASS_STEPS_ENTITY', value: 'sensor.pixel_8_pro_daily_steps' },
         { key: 'STEPS_OBJECTIVE', value: '10000' },
         { key: 'STEAM_ID', value: '76561199032784414' },
-        { key: 'HASS_PHONE_BATTERY_LEVEL', value: 'sensor.pixel_8_pro_battery_level' }
-        { key: 'HASS_PHONE_BATTERY_STATE', value: 'sensor.pixel_8_pro_battery_state' }
-        { key: 'HASS_PHONE_DND_SENSOR', value: 'sensor.pixel_8_pro_do_not_disturb_sensor' }
-        { key: 'HASS_PHONE_HOTSPOT_STATE', value: 'binary_sensor.pixel_8_pro_hotspot_state' }
-        { key: 'HASS_PHONE_LOCKED_STATUS', value: 'binary_sensor.pixel_8_pro_device_locked' }
-        { key: 'TAILSCALE_PHONE_ID', value: '' }
-        { key: 'TAILSCALE_PHONE_SHOW', value: 'false' }
+        { key: 'HASS_PHONE_BATTERY_LEVEL', value: 'sensor.pixel_8_pro_battery_level' },
+        { key: 'HASS_PHONE_BATTERY_STATE', value: 'sensor.pixel_8_pro_battery_state' },
+        { key: 'HASS_PHONE_DND_SENSOR', value: 'sensor.pixel_8_pro_do_not_disturb_sensor' },
+        { key: 'HASS_PHONE_HOTSPOT_STATE', value: 'binary_sensor.pixel_8_pro_hotspot_state' },
+        { key: 'HASS_PHONE_LOCKED_STATUS', value: 'binary_sensor.pixel_8_pro_device_locked' },
+        { key: 'TAILSCALE_PHONE_ID', value: '' },
+        { key: 'TAILSCALE_PHONE_SHOW', value: 'false' },
+        { key: 'PHONE_MODEL', value: 'P8P'}
 			];
 
 			for (const config of configs) {
