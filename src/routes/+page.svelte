@@ -11,6 +11,7 @@
   import AgeWidget from "$lib/tiles/age.svelte"
   import StepsWidget from "$lib/tiles/steps.svelte"
   import SteamWidget from '$lib/tiles/steam.svelte'
+  import PhoneWidget from '$lib/tiles/phone.svelte'
   import { authClient } from "$lib/auth/auth-client";
   const session = authClient.useSession();
   // import TemplateSmall from "$lib/tiles/template_small.svelte"
@@ -48,6 +49,7 @@
         <div class="item"><AgeWidget/></div>
         <div class="item"><StepsWidget/></div>
         <div class="item"><SteamWidget/></div>
+        <div class="item item-wide"><PhoneWidget/></div>
         <!-- <div class="item"><TemplateSmall/></div> -->
         <!-- <div class="item item-wide"><TemplateWide/></div> -->
     </div>
