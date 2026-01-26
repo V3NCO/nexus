@@ -38,7 +38,7 @@ Well I can give you a roadmap of what's done and what I was (originally) plannin
 - [ ] Eeping or not?
 
 ## Screenshot
-![Screenshot](readmeimgs/preview.png)
+![Screenshot](readmeimgs/preview2.png)
 
 ## Requirements
 You need the following to spin up a nexus instance:
