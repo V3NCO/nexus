@@ -203,6 +203,12 @@ This one is just for a little status on the phone widget so its optional; if you
 - the emoji one that shows up on the map
 - the `ID` is on the default items `1` for `My Phone :3` and `2` for `Stardust - my mac!`
 - the map centers on the item with an `ID` of `1` when loaded
+31. For Calendars
+- ID is a numerical value, doesnt matter that much just dont do duplicates
+- Name is the name of the calendar
+- url is the CalDAV url for example on a radicale instance you can just copy paste the url it shows
+- color is hex for what will show up in lists and next event wheel
+- Env vars are the name of the environment variables you set, for example on my setup i set `RADICALE_USERNAME` in .env to `venco` and then in the config `Env var for username` is `RADICALE_USERNAME`
 
 And it's done! Now you can tell your friends to create an account and assign them according permissions from that admin page! You can still access the page without being logged in just without the hidden widgets
 
