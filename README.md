@@ -1,5 +1,8 @@
 # Nexus
 
+> [!INFO]
+> Nexus has reached a state that satisfies me, therefore, I am not planning to make any major update anytime soon, I might do some bug fixes here and there but that's about it :3
+
 ## What's nexus ?
 This project was made for [Hackclub Midnight](https://midnight.hackclub.com)!
 The point of it is that people can see what I've been up to lately, all on one webpage!
