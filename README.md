@@ -1,7 +1,9 @@
 # Nexus
 
-> [!INFO]
-> Nexus has reached a state that satisfies me, therefore, I am not planning to make any major update anytime soon, I might do some bug fixes here and there but that's about it :3
+> [!NOTE]
+> Nexus has reached a state that satisfies me, therefore,
+> I am not planning to make any major update anytime soon,
+> I might do some bug fixes here and there but that's about it :3
 
 ## What's nexus ?
 This project was made for [Hackclub Midnight](https://midnight.hackclub.com)!
