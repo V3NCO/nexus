@@ -102,7 +102,7 @@ export async function PATCH({ locals, params, request }: RequestEvent): Promise<
 	const canWriteCalendar = await auth.api.userHasPermission({
 		body: {
 			userId: user.id,
-			permission: { calendar: ['write'] } as any
+			permissions: { calendar: ['write'] } as any
 		}
 	});
 
@@ -145,7 +145,7 @@ export async function DELETE({ locals, params }: RequestEvent): Promise<Response
   const canDeleteCalendar = await auth.api.userHasPermission({
     body: {
       userId: user.id,
-      permission: { calendar: ['delete'] } as any
+      permissions: { calendar: ['delete'] } as any
     }
   });
 

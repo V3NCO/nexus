@@ -12,7 +12,7 @@ export async function GET({ locals }: RequestEvent): Promise<Response> {
 	const canReadLocation = await auth.api.userHasPermission({
 		body: {
 			userId: user.id,
-			permission: { location: ['read'] } as any
+			permissions: { location: ['read'] } as any
 		}
 	});
 
@@ -37,7 +37,7 @@ export async function POST({ locals, request }: RequestEvent): Promise<Response>
 	const canWriteLocation = await auth.api.userHasPermission({
 		body: {
 			userId: user.id,
-			permission: { location: ['write'] } as any
+			permissions: { location: ['write'] } as any
 		}
 	});
 

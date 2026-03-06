@@ -11,7 +11,7 @@
         (async () => {
           const isAdminLocal = await authClient.admin.hasPermission({
               userId: ($session as any).data?.user.id,
-              permission: { "adminPanel": ["access"] }
+              permissions: { "adminPanel": ["access"] }
           });
           isAdmin = isAdminLocal.data?.success
           loading = false;

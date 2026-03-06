@@ -46,7 +46,7 @@ export async function POST({ locals, request }: RequestEvent): Promise<Response>
 	const isAdmin = await auth.api.userHasPermission({
 		body: {
 			userId: user.id,
-			permission: { user: ['update'] } as any // Admins typically have user update perms
+			permissions: { user: ['update'] } as any // Admins typically have user update perms
 		}
 	});
 

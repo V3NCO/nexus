@@ -21,7 +21,7 @@ export async function POST({ locals, request }: RequestEvent): Promise<Response>
 	const canWriteCalendar = await auth.api.userHasPermission({
 		body: {
 			userId: user.id,
-			permission: { calendar: ['write'] } as any
+			permissions: { calendar: ['write'] } as any
 		}
 	});
 

@@ -22,7 +22,7 @@ export async function GET({ url, locals, params }: RequestEvent): Promise<Respon
   const canReadLocation = await auth.api.userHasPermission({
     body: {
       userId: user.id,
-      permission: {"location": ["read"]} as any
+      permissions: {"location": ["read"]} as any
     }
   });
   if (!canReadLocation.success) {
@@ -64,7 +64,7 @@ export async function PATCH({ locals, params, request }: RequestEvent): Promise<
 	const canWriteLocation = await auth.api.userHasPermission({
 		body: {
 			userId: user.id,
-			permission: { location: ['write'] } as any
+			permissions: { location: ['write'] } as any
 		}
 	});
 
@@ -105,7 +105,7 @@ export async function DELETE({ locals, params }: RequestEvent): Promise<Response
 	const canDeleteLocation = await auth.api.userHasPermission({
 		body: {
 			userId: user.id,
-			permission: { location: ['delete'] } as any
+			permissions: { location: ['delete'] } as any
 		}
 	});
 
